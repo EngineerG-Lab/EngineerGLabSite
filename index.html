@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EngineerG Lab - Innovating the Future of Engineering</title>
+    <meta name="description" content="EngineerG Lab is at the forefront of engineering innovation, specializing in AI, robotics, and sustainable technology solutions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        /* Variables for light and dark theme */
+        :root {
+            --orange-primary: #FF8C00;
+            --orange-secondary: #FFA500;
+            --orange-light: #FFDAB9;
+            --orange-dark: #CC7000;
+            
+            /* Light theme (default) */
+            --bg-primary: #FFF8F0;
+            --bg-secondary: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #6B7280;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --hero-overlay: rgba(0, 0, 0, 0.75);
+            --footer-bg: var(--orange-dark);
+            --footer-text: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark theme */
+        body.dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1E1E1E;
+            --text-primary: #E0E0E0;
+            --text-secondary: #A0A0A0;
+            --header-bg: rgba(18, 18, 18, 0.85);
+            --card-shadow: rgba(0, 0, 0, 0.4);
+            --hero-overlay: rgba(0, 0, 0, 0.8);
+            --footer-bg: #1E1E1E;
+            --footer-text: #E0E0E0;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            cursor: none; /* Hide default cursor */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+            overflow-x: hidden;
+            transition: background-color 0.4s, color 0.4s;
+            background-image: radial-gradient(circle at top left, rgba(255,165,0,0.01) 0%, transparent 50%),
+                              radial-gradient(circle at bottom right, rgba(255,140,0,0.01) 0%, transparent 50%);
+            background-size: 150% 150%;
+            animation: body-bg-animation 40s linear infinite alternate;
+        }
+
+        @keyframes body-bg-animation {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Custom cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--orange-primary);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--orange-secondary);
+            transition: transform 0.2s ease-out, width 0.3s, height 0.3s;
+        }
+        .cursor-interact {
+            transform: scale(1.5);
+        }
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline { display: none; }
+            html { cursor: auto; }
+        }
+        
+        /* Language switching logic */
+        html[lang="ru"] .lang-en, html[lang="ru"] .lang-ua,
+        html[lang="en"] .lang-ru, html[lang="en"] .lang-ua,
+        html[lang="ua"] .lang-ru, html[lang="ua"] .lang-en {
+            display: none;
+        }
+
+        /* Ensure default cursor is hidden on interactive elements */
+        a, button, .interactive-card, .copy-btn {
+            cursor: none !important; 
+        }
+
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.5rem 0;
+            transition: padding 0.3s ease, box-shadow 0.3s ease, background-color 0.4s;
+        }
+
+        header.scrolled {
+            padding: 0.25rem 0;
+            box-shadow: 0 2px 6px var(--card-shadow);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-img {
+            height: 50px;
+            width: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--orange-primary), var(--orange-secondary));
+            transition: width 0.3s ease-out;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            background-image: linear-gradient(90deg, var(--orange-primary), var(--orange-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+        
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Language Dropdown Styles */
+        .language-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .language-dropdown .current-lang-btn {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--text-secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 80px;
+        }
+        
+        .language-dropdown .current-lang-btn:hover {
+            border-color: var(--orange-primary);
+            color: var(--text-primary);
+        }
+
+        .language-dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--bg-secondary);
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-top: 5px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .language-dropdown .dropdown-content a {
+            color: var(--text-primary);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: background-color 0.2s;
+        }
+
+        .language-dropdown .dropdown-content a:hover {
+            background-color: var(--bg-primary);
+        }
+        
+        .language-dropdown .dropdown-content a.active {
+            background-color: var(--orange-light);
+            font-weight: bold;
+        }
+        
+        body.dark-mode .language-dropdown .dropdown-content a.active {
+             background-color: var(--orange-dark);
+        }
+
+        .language-dropdown.show .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .flag-icon {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        
+        #theme-toggle {
+            background: transparent;
+            border: 1px solid var(--text-secondary);
+            border-radius: 5px;
+            width: 40px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        #theme-toggle:hover {
+            border-color: var(--orange-primary);
+        }
+        #theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary);
+            transition: fill 0.2s;
+        }
+        #theme-toggle:hover svg {
+            fill: var(--orange-primary);
+        }
+        .theme-icon { display: none; }
+        body:not(.dark-mode) .sun-icon { display: block; }
+        body.dark-mode .moon-icon { display: block; }               
+
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+            border-radius: 12px;
+            margin: 2rem auto;
+            box-shadow: 0 8px 16px var(--card-shadow);
+            overflow: hidden;
+            position: relative;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            animation: hero-parallax 60s linear infinite alternate;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.85));
+            z-index: 1;
+            border-radius: 12px;
+            transition: background-color 0.4s;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: particle-move 120s linear infinite;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        @keyframes particle-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 2000px 2000px; }
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes hero-parallax {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: #ffffff;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-image: linear-gradient(45deg, var(--orange-primary) 0%, var(--orange-dark) 100%);
+            color: #ffffff;
+            padding: 0.75rem 1.75rem;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-position 0.3s ease, transform 0.2s, box-shadow 0.2s;
+            background-size: 200% auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: none;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn:hover {
+            background-position: right center;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35), 0 0 20px var(--orange-primary);
+        }
+
+        .btn:active {
+            transform: translateY(-2px) scale(0.98);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section {
+            padding: 5rem 0;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            background-image: radial-gradient(circle at center, rgba(255,165,0,0.02) 0%, transparent 70%);
+            background-size: 200% 200%;
+            animation: radial-pulse 15s infinite ease-in-out alternate;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 5px rgba(128, 128, 128, 0.05);
+        }
+
+        @keyframes radial-pulse {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .section.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            background: -webkit-linear-gradient(45deg, var(--orange-dark), var(--orange-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            color: var(--text-secondary);
+        }
+
+        .content-wrapper h3 {
+            font-size: 1.5rem;
+            color: var(--orange-dark);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-wrapper p {
+            margin-bottom: 1rem;
+        }
+
+        .content-wrapper strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .about-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-top: 2rem;
+            box-shadow: 0 4px 8px var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .quote-block {
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--orange-secondary);
+            background-color: rgba(255, 165, 0, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+        body.dark-mode .quote-block {
+            background-color: rgba(255, 165, 0, 0.1);
+        }
+        .quote-block p {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .quote-block cite {
+            font-style: normal;
+            font-size: 0.9rem;
+            color: var(--orange-dark);
+            font-weight: 500;
+        }
+        .quote-block.tf2-quote {
+            border-left-color: #B8383B; /* TF2 Red */
+        }
+        .quote-block.tf2-quote cite {
+            font-family: 'Space Grotesk', sans-serif;
+            color: #CF6A32; /* TF2 Orange */
+        }
+
+
+        .features {
+            background-image: linear-gradient(45deg, rgba(255,165,0,0.05) 25%, transparent 25%, transparent 75%, rgba(255,165,0,0.05) 75%, rgba(255,165,0,0.05) 100%),
+                              linear-gradient(-45deg, rgba(255,165,0,0.05) 25%, transparent 25%, transparent 75%, rgba(255,165,0,0.05) 75%, rgba(255,165,0,0.05) 100%);
+            background-size: 20px 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .interactive-card {
+            background-color: var(--bg-secondary);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px var(--card-shadow);
+            border: 1px solid transparent;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                        background-color 0.4s;
+        }
+        .interactive-card:hover {
+            box-shadow: 0 12px 20px -3px var(--card-shadow), 0 0 15px rgba(255, 140, 0, 0.6);
+            border: 1px solid var(--orange-secondary);
+        }
+
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .feature-icon-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-icon-emoji:hover {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        .feature-title {
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+            color: var(--orange-dark);
+        }
+        
+        .feature-desc {
+            color: var(--text-secondary);
+        }
+
+        .employee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .employee-card { text-align: center; }
+
+        .employee-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--orange-primary);
+        }
+
+        .employee-name { font-weight: 600; color: var(--orange-dark); margin-bottom: 0.5rem; }
+        .employee-role { font-size: 0.9rem; color: var(--text-secondary); }
+
+        .hall-of-fame-subsection {
+            margin-top: 3rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            transition: background-color 0.4s, border-color 0.4s, box-shadow 0.4s;
+        }
+        .hall-of-fame-subsection:first-of-type {
+            margin-top: 0;
+        }
+        .subsection-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+        .subsection-description {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--text-secondary);
+        }
+        .donors-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .donor-chip {
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .donor-chip:hover {
+            transform: translateY(-3px);
+            background-image: linear-gradient(45deg, var(--orange-primary), var(--orange-secondary));
+            color: white;
+            box-shadow: 0 4px 8px rgba(255, 140, 0, 0.4);
+        }
+
+        .project-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+        }
+        .project-card-link .interactive-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card-link .interactive-card::after {
+            content: '🔗';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s ease;
+            color: var(--orange-primary);
+        }
+        .project-card-link:hover .interactive-card::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .donation-section {
+            margin-top: 4rem;
+            padding: 3rem 1.5rem;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px var(--card-shadow);
+            text-align: center;
+            transition: background-color 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .donation-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(var(--border-color) 1px, transparent 1px),
+                linear-gradient(to right, var(--border-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            animation: bg-scroll 90s linear infinite;
+            z-index: 0;
+        }
+        @keyframes bg-scroll {
+            from { background-position: 0 0; }
+            to { background-position: -500px -500px; }
+        }
+        .donation-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .donation-section h3 {
+            font-size: 2rem;
+            color: var(--orange-dark);
+            margin-bottom: 1.5rem;
+        }
+        .donation-section p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .wallet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .wallet-item {
+            background-color: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            text-align: left;
+            transition: background-color 0.4s, transform 0.2s ease;
+            border: 1px solid var(--border-color);
+            position: relative;
+            z-index: 1;
+        }
+        .wallet-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        .wallet-item h4 {
+            font-size: 1.25rem;
+            color: var(--orange-primary);
+            margin-bottom: 0.75rem;
+        }
+        .wallet-address {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            word-break: break-all;
+            margin-bottom: 1rem;
+        }
+        .copy-btn {
+            background-color: var(--orange-secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .copy-btn:hover {
+            background-color: var(--orange-primary);
+            transform: translateY(-2px);
+        }
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+        .copy-message {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .copy-message.show {
+            opacity: 1;
+        }
+
+        .kofi-card {
+            grid-column: 1 / -1; /* Span full width */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem;
+            margin-top: 1.5rem;
+            background: linear-gradient(135deg, #13C3FF, #292E42);
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kofi-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(19, 195, 255, 0.3);
+        }
+        .kofi-logo {
+            width: 50px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        .kofi-card h4 {
+            font-size: 1.75rem;
+            color: white;
+            margin-bottom: 0.75rem;
+        }
+        .kofi-card p {
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 500px;
+            margin-bottom: 1.5rem;
+        }
+        .kofi-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: #FF5E5B;
+            color: white;
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(255, 94, 91, 0.4);
+        }
+        .kofi-btn:hover {
+            background-color: #e65552;
+            transform: scale(1.05);
+        }
+        .kofi-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+
+        .cta { text-align: center; }
+        .cta h2 { margin-bottom: 1.5rem; }
+        .cta p { max-width: 600px; margin: 0 auto 2.5rem; color: var(--text-primary); }
+        
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 3rem 0;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            box-shadow: 0 -4px 8px var(--card-shadow);
+            background-image: linear-gradient(90deg, rgba(255,140,0,0.1) 0%, transparent 50%, rgba(255,140,0,0.1) 100%);
+            background-size: 200% 100%;
+            animation: footer-gradient 30s linear infinite alternate;
+            position: relative;
+            transition: background-color 0.4s, color 0.4s;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(0deg, rgba(255,255,255,0.02) 50%, transparent 50%),
+                              linear-gradient(90deg, rgba(255,255,255,0.02) 50%, transparent 50%);
+            background-size: 20px 20px; z-index: 0; opacity: 0.5;
+        }
+
+        footer .container { position: relative; z-index: 1; }
+        @keyframes footer-gradient {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 0%; }
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .footer-content h3 { font-size: 1.75rem; margin-bottom: 1rem; }
+        .social-links { display: flex; gap: 1.5rem; margin: 2rem 0; }
+        .social-links a { color: var(--footer-text); transition: transform 0.2s ease, color 0.2s ease; }
+        .social-links a:hover { 
+            transform: scale(1.1) translateY(-2px);
+            color: var(--orange-primary);
+        }
+        .social-links svg { 
+            width: 30px; 
+            height: 30px; 
+            fill: currentColor; /* Use current color for fill */
+        }
+        .copyright { color: var(--orange-light); font-size: 0.875rem; }
+        body.dark-mode .copyright { color: var(--text-secondary); }
+
+        .contact-email {
+            font-size: 1.1rem; margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .contact-email svg { width: 20px; height: 20px; fill: var(--orange-light); }
+        body.dark-mode .contact-email svg { fill: var(--text-secondary); }
+        .contact-email a { color: var(--footer-text); text-decoration: none; font-weight: 600; }
+        .contact-email a:hover { text-decoration: underline; }
+        
+        @media (max-width: 1024px) {
+            .header-container { 
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            nav {
+                order: 3;
+                width: 100%;
+                margin-top: 1rem;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            .header-controls {
+                order: 2;
+            }
+            .logo-img {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .section { padding: 3rem 0; }
+            .section-title { font-size: 2rem; }
+            .employee-grid { grid-template-columns: 1fr; }
+            nav ul { flex-direction: column; align-items: center; gap: 0.5rem; }
+            .wallet-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            .hero { padding: 4rem 0; }
+            .hero h1 { font-size: 2rem; }
+        }
+
+        #scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--orange-primary);
+            color: white; border: none;
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            font-size: 1.5rem;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+        }
+        #scroll-to-top.show { opacity: 1; visibility: visible; }
+        #scroll-to-top:hover {
+            background-color: var(--orange-dark);
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0; height: 5px;
+            background: linear-gradient(90deg, var(--orange-primary), var(--orange-dark));
+            z-index: 1000;
+            width: 0%;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div id="scroll-progress"></div>
+    <header>
+        <div class="container header-container">
+            <a href="#home"><img src="https://placehold.co/200x50/FF8C00/ffffff?text=EngineerG+Lab&font=spacemono" alt="EngineerG Lab Logo" class="logo-img"></a>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="lang-en">Home</a><a href="#home" class="lang-ru">Главная</a><a href="#home" class="lang-ua">Головна</a></li>
+                    <li><a href="#history" class="lang-en">History</a><a href="#history" class="lang-ru">История</a><a href="#history" class="lang-ua">Історія</a></li>
+                    <li><a href="#philosophy" class="lang-en">Our Philosophy</a><a href="#philosophy" class="lang-ru">Наша Философия</a><a href="#philosophy" class="lang-ua">Наша Філософія</a></li>
+                    <li><a href="#offerings" class="lang-en">Offerings</a><a href="#offerings" class="lang-ru">Предложения</a><a href="#offerings" class="lang-ua">Пропозиції</a></li>
+                    <li><a href="#employees" class="lang-en">Employees</a><a href="#employees" class="lang-ru">Сотрудники</a><a href="#employees" class="lang-ua">Співробітники</a></li>
+                    <li><a href="#hall-of-fame" class="lang-en">Hall of Fame</a><a href="#hall-of-fame" class="lang-ru">Зал Славы</a><a href="#hall-of-fame" class="lang-ua">Зал Слави</a></li>
+                    <li><a href="#contact" class="lang-en">Contact</a><a href="#contact" class="lang-ru">Контакты</a><a href="#contact" class="lang-ua">Контакти</a></li>
+                </ul>
+            </nav>
+            <div class="header-controls">
+                <div class="language-dropdown" id="language-dropdown">
+                    <button class="current-lang-btn" id="current-lang-btn">
+                        <!-- Content will be set by JS -->
+                    </button>
+                    <div class="dropdown-content" id="dropdown-content">
+                        <a href="#" class="lang-option" data-lang="en">
+                            <span class="flag-icon">🇬🇧</span>
+                            <span>English</span>
+                        </a>
+                        <a href="#" class="lang-option" data-lang="ru">
+                            <span class="flag-icon">🏴‍☠️</span>
+                            <span>Русский</span>
+                        </a>
+                        <a href="#" class="lang-option" data-lang="ua">
+                            <span class="flag-icon">🇺🇦</span>
+                            <span>Українська</span>
+                        </a>
+                    </div>
+                </div>
+                <button id="theme-toggle" aria-label="Toggle theme">
+                    <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1 class="lang-en">Innovating the Future of Engineering</h1>
+                <h1 class="lang-ru">Инновации в Будущем Инженерии</h1>
+                <h1 class="lang-ua">Інновації в Майбутньому Інженерії</h1>
+                <p class="lang-en">At EngineerG Lab, we push the boundaries of technology to create solutions that shape tomorrow's world. Our interdisciplinary approach combines cutting-edge research with practical applications.</p>
+                <p class="lang-ru">В EngineerG Lab мы расширяем границы технологий, чтобы создавать решения, формирующие мир завтрашнего дня. Наш междисциплинарный подход сочетает передовые исследования с практическими применениями.</p>
+                <p class="lang-ua">У EngineerG Lab ми розширюємо межі технологій, щоб створювати рішення, що формують світ завтрашнього дня. Наш міждисциплінарний підхід поєднує передові дослідження з практичними застосуваннями.</p>
+                <a href="#offerings" class="btn lang-en">Explore Our Work</a>
+                <a href="#offerings" class="btn lang-ru">Изучить нашу работу</a>
+                <a href="#offerings" class="btn lang-ua">Дослідити нашу роботу</a>
+            </div>
+        </section>
+
+        <section id="history" class="section">
+            <div class="container">
+                <h2 class="section-title lang-en">Our History</h2>
+                <h2 class="section-title lang-ru">Наша История</h2>
+                <h2 class="section-title lang-ua">Наша Історія</h2>
+                <div class="content-wrapper">
+                    <p class="lang-en">
+                        EngineerG Lab is more than just a research group; it is a scientific community founded on September 30, 2024. We have brought together people who are passionate about the future, who are not willing to stand by, and who believe in the power of collective intelligence. Our journey began with a simple idea: to create a space where bold ideas can be born, tested, and brought to life without bureaucratic constraints.
+                    </p>
+                    <p class="lang-ru">
+                        EngineerG Lab - это не просто научная группа, это целое научное сообщество, созданное 30 сентября 2024 года. Мы собрали всех неравнодушных к будущему людей, которые не готовы стоять в стороне и верят в силу коллективного разума. Наш путь начался с простой идеи: создать пространство, где смелые идеи могут рождаться, проверяться и воплощаться в жизнь без бюрократических ограничений.
+                    </p>
+                    <p class="lang-ua">
+                        EngineerG Lab - це не просто наукова група, це ціла наукова спільнота, створена 30 вересня 2024 року. Ми зібрали всіх небайдужих до майбутнього людей, які не готові стояти осторонь і вірять у силу колективного розуму. Наш шлях розпочався з простої ідеї: створити простір, де сміливі ідеї можуть народжуватися, перевірятися та втілюватися в життя без бюрократичних обмежень.
+                    </p>
+                    <p class="lang-en">
+                        From a small circle of enthusiasts, we have grown into a dynamic ecosystem of engineers, developers, scientists, and visionaries. Each member contributes their unique experience and perspective, allowing us to tackle complex challenges at the intersection of disciplines. We are united by a common goal: to use technology as a tool for positive change and to build a future we can all be proud of.
+                    </p>
+                    <p class="lang-ru">
+                        Из небольшого круга энтузиастов мы выросли в динамичную экосистему инженеров, разработчиков, ученых и визионеров. Каждый участник вносит свой уникальный опыт и взгляд, что позволяет нам решать сложные задачи на стыке дисциплин. Нас объединяет общая цель: использовать технологии как инструмент для позитивных изменений и строить будущее, которым мы все сможем гордиться.
+                    </p>
+                    <p class="lang-ua">
+                        З невеликого кола ентузіастів ми виросли в динамічну екосистему інженерів, розробників, науковців та візіонерів. Кожен учасник робить свій унікальний внесок та ділиться своїм баченням, що дозволяє нам вирішувати складні завдання на стику дисциплін. Нас об'єднує спільна мета: використовувати технології як інструмент для позитивних змін і будувати майбутнє, яким ми всі зможемо пишатися.
+                    </p>
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1740&auto=format&fit=crop" alt="[Изображение команды EngineerG Lab в работе]" class="about-image" onerror="this.onerror=null;this.src='https://placehold.co/800x533/cccccc/ffffff?text=Image+Not+Found';">
+                </div>
+            </div>
+        </section>
+
+        <section id="philosophy" class="section">
+            <div class="container">
+                <h2 class="section-title lang-en">Our Philosophy: Creating the Future with Responsibility</h2>
+                <h2 class="section-title lang-ru">Наша Философия: Создавать Будущее с Ответственностью</h2>
+                <h2 class="section-title lang-ua">Наша Філософія: Створювати Майбутнє з Відповідальністю</h2>
+                <div class="content-wrapper">
+                    <p class="lang-en">At the core of EngineerG Lab lies not just technology, but a deep engineering philosophy that defines our approach to every task. We believe that true innovation is born at the intersection of courage, a scientific approach, and a desire to bring value.</p>
+                    <p class="lang-ru">В основе EngineerG Lab лежат не просто технологии, а глубокая инженерная философия, которая определяет наш подход к каждой задаче. Мы верим, что истинная инновация рождается на стыке смелости, научного подхода и стремления приносить пользу.</p>
+                    <p class="lang-ua">В основі EngineerG Lab лежать не просто технології, а глибока інженерна філософія, яка визначає наш підхід до кожного завдання. Ми віримо, що справжня інновація народжується на стику сміливості, наукового підходу та прагнення приносити користь.</p>
+
+                    <h3 class="lang-en">1. First-Principles Thinking</h3>
+                    <h3 class="lang-ru">1. Мышление от первых принципов</h3>
+                    <h3 class="lang-ua">1. Мислення від перших принципів</h3>
+                    <p class="lang-en">We do not accept the status quo. Instead of improving existing solutions, we break down every problem to its fundamental, undeniable truths. This approach allows us to see unconventional paths and create truly groundbreaking technologies, not just another iteration.</p>
+                    <p class="lang-ru">Мы не принимаем статус-кво. Вместо того чтобы улучшать существующие решения, мы разбираем каждую проблему до ее фундаментальных, неоспоримых истин. Этот подход позволяет нам видеть нетривиальные пути и создавать действительно прорывные технологии, а не просто очередные итерации.</p>
+                    <p class="lang-ua">Ми не приймаємо статус-кво. Замість того, щоб покращувати існуючі рішення, ми розбираємо кожну проблему до її фундаментальних, незаперечних істин. Цей підхід дозволяє нам бачити нетривіальні шляхи та створювати справді проривні технології, а не просто чергові ітерації.</p>
+                    <blockquote class="quote-block">
+                        <p class="lang-en">"If I had an hour to solve a problem, I'd spend 55 minutes thinking about the problem and 5 minutes thinking about solutions."</p>
+                        <p class="lang-ru">"Если бы у меня был час на решение проблемы, я бы потратил 55 минут на размышления о проблеме и 5 минут на поиски ее решения."</p>
+                        <p class="lang-ua">"Якби у мене була година на вирішення проблеми, я б витратив 55 хвилин на роздуми про проблему і 5 хвилин на пошуки її вирішення."</p>
+                        <cite>— Albert Einstein</cite>
+                    </blockquote>
+
+                    <h3 class="lang-en">2. Pragmatic Innovation</h3>
+                    <h3 class="lang-ru">2. Прагматичные инновации</h3>
+                    <h3 class="lang-ua">2. Прагматичні інновації</h3>
+                    <p class="lang-en">We are passionate about the future, but we stand firmly on the ground. Any idea, no matter how bold, is tested in our lab for durability, scalability, and real-world applicability. We create not concepts for exhibitions, but reliable, working solutions ready for integration into the real world.</p>
+                    <p class="lang-ru">Мы увлечены будущим, но твердо стоим на земле. Любая, даже самая смелая идея, в нашей лаборатории проходит проверку на прочность, масштабируемость и реальную применимость. Мы создаем не концепты для выставок, а надежные, работающие решения, готовые к интеграции в реальный мир.</p>
+                    <p class="lang-ua">Ми захоплені майбутнім, але твердо стоїмо на землі. Будь-яка, навіть найсміливіша ідея, в нашій лабораторії проходить перевірку на міцність, масштабованість та реальну застосовність. Ми створюємо не концепти для виставок, а надійні, робочі рішення, готові до інтеграції в реальний світ.</p>
+                    <blockquote class="quote-block tf2-quote">
+                        <p class="lang-en">"I solve practical problems."</p>
+                        <p class="lang-ru">"Я решаю практические проблемы."</p>
+                        <p class="lang-ua">"Я вирішую практичні проблеми."</p>
+                        <cite class="lang-en">— The Engineer, Team Fortress 2</cite>
+                        <cite class="lang-ru">— Инженер, Team Fortress 2</cite>
+                        <cite class="lang-ua">— Інженер, Team Fortress 2</cite>
+                    </blockquote>
+
+                    <h3 class="lang-en">3. Technology for People</h3>
+                    <h3 class="lang-ru">3. Технологии для человека</h3>
+                    <h3 class="lang-ua">3. Технології для людини</h3>
+                    <p class="lang-en">The main criterion for our success is a positive impact on people's lives. We design systems that are intuitive, safe, and expand human capabilities, not complicate them. Technology must serve people, and this principle is at the core of every one of our projects.</p>
+                    <p class="lang-ru">Главный критерий для нас — это позитивное влияние на жизнь людей. Мы проектируем системы, которые интуитивно понятны, безопасны и расширяют человеческие возможности, не усложняют их. Технология должна служить человеку, и этот принцип лежит в основе каждого нашего проекта.</p>
+                    <p class="lang-ua">Головний критерій успіху для нас — це позитивний вплив на життя людей. Ми проєктуємо системи, які є інтуїтивно зрозумілими, безпечними та розширюють людські можливості, а не ускладнюють їх. Технологія повинна служити людині, і цей принцип лежить в основі кожного нашого проєкту.</p>
+                    <blockquote class="quote-block">
+                        <p class="lang-en">"Technology is nothing. What's important is that you have a faith in people... if you give them tools, they'll do wonderful things with them."</p>
+                        <p class="lang-ru">"Технология — это ничто. Важно то, что у вас есть вера в людей... если вы дадите им инструменты, они сделают с ними чудесные вещи."</p>
+                        <p class="lang-ua">"Технологія — це ніщо. Важливо те, що у вас є віра в людей... якщо ви дасте їм інструменти, вони зроблять з ними дивовижні речі."</p>
+                        <cite>— Steve Jobs</cite>
+                    </blockquote>
+
+                    <h3 class="lang-en">4. Strength in Collaboration</h3>
+                    <h3 class="lang-ru">4. Сила в сотрудничестве</h3>
+                    <h3 class="lang-ua">4. Сила у співпраці</h3>
+                    <p class="lang-en">We are convinced that brilliant solutions are rarely born in isolation. Our lab is an ecosystem where engineers, developers, designers, and researchers from different fields exchange knowledge and ideas. We actively collaborate with partners from science and business to jointly solve problems that are impossible for one to handle.</p>
+                    <p class="lang-ru">Мы убеждены, что гениальные решения редко рождаются в одиночку. Наша лаборатория — это экосистема, где инженеры, разработчики, дизайнеры и исследователи из разных областей обмениваются знаниями и идеями. Мы активно сотрудничаем с партнерами из науки и бизнеса, чтобы совместно решать задачи, которые не под силу одному.</p>
+                    <p class="lang-ua">Ми переконані, що геніальні рішення рідко народжуються наодинці. Наша лабораторія — це екосистема, де інженери, розробники, дизайнери та дослідники з різних галузей обмінюються знаннями та ідеями. Ми активно співпрацюємо з партнерами з науки та бізнесу, щоб спільно вирішувати завдання, які не під силу одному.</p>
+                    <blockquote class="quote-block tf2-quote">
+                        <p class="lang-en">"We need a Dispenser right here!"</p>
+                        <p class="lang-ru">"Нам нужен Раздатчик прямо здесь!"</p>
+                        <p class="lang-ua">"Нам потрібен Роздавальник прямо тут!"</p>
+                        <cite class="lang-en">— The Engineer, Team Fortress 2</cite>
+                        <cite class="lang-ru">— Инженер, Team Fortress 2</cite>
+                        <cite class="lang-ua">— Інженер, Team Fortress 2</cite>
+                    </blockquote>
+
+                    <h3 class="lang-en">5. Ethical Responsibility</h3>
+                    <h3 class="lang-ru">5. Этическая ответственность</h3>
+                    <h3 class="lang-ua">5. Етична відповідальність</h3>
+                    <p class="lang-en">Creating powerful tools, we are aware of our responsibility. Issues of security, data privacy, and the long-term impact on society and the environment are a priority for us at all stages of development. We strive to build not only a smart, but also a sustainable, fair future.</p>
+                    <p class="lang-ru">Создавая мощные инструменты, мы осознаем свою ответственность. Вопросы безопасности, конфиденциальности данных и долгосрочного влияния на общество и окружающую среду являются для нас приоритетом на всех этапах разработки. Мы стремимся строить не только умное, но и устойчивое, справедливое будущее.</p>
+                    <p class="lang-ua">Створюючи потужні інструменти, ми усвідомлюємо свою відповідальність. Питання безпеки, конфіденційності даних та довгострокового впливу на суспільство та навколишнє середовище є для нас пріоритетом на всіх етапах розробки. Ми прагнемо будувати не тільки розумне, але й стійке, справедливе майбутнє.</p>
+                    <blockquote class="quote-block">
+                        <p class="lang-en">"Concern for man and his fate must always form the chief interest of all technical endeavors. Never forget this in the midst of your diagrams and equations."</p>
+                        <p class="lang-ru">"Забота о человеке и его судьбе всегда должна быть главным интересом всех технических начинаний. Никогда не забывайте об этом среди ваших диаграмм и уравнений."</p>
+                        <p class="lang-ua">"Турбота про людину та її долю завжди повинна бути головним інтересом усіх технічних починань. Ніколи не забувайте про це серед ваших діаграм та рівнянь."</p>
+                        <cite>— Albert Einstein</cite>
+                    </blockquote>
+                    
+                    <p><strong><span class="lang-en">Our mission is not just to follow progress, but to be its architects, creating technologies that make the world more efficient, safer, and more humane.</span><span class="lang-ru">Наша миссия — не просто следовать за прогрессом, а быть его архитекторами, создавая технологии, которые делают мир более эффективным, безопасным и гуманным.</span><span class="lang-ua">Наша місія — не просто слідувати за прогресом, а бути його архітекторами, створюючи технології, які роблять світ ефективнішим, безпечнішим та гуманнішим.</span></strong></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="offerings" class="section features">
+            <div class="container">
+                <h2 class="section-title lang-en">Our Key Offerings</h2>
+                <h2 class="section-title lang-ru">Наши Ключевые Предложения</h2>
+                <h2 class="section-title lang-ua">Наші Ключові Пропозиції</h2>
+                <div class="features-grid">
+                    <div class="feature-card interactive-card">
+                        <span class="feature-icon-emoji">🧠</span>
+                        <h3 class="feature-title lang-en">AI & Machine Learning</h3>
+                        <h3 class="feature-title lang-ru">ИИ и Машинное Обучение</h3>
+                        <h3 class="feature-title lang-ua">ШІ та Машинне Навчання</h3>
+                        <p class="feature-desc lang-en">Developing intelligent systems that learn and adapt to solve real-world challenges across industries.</p>
+                        <p class="feature-desc lang-ru">Разработка интеллектуальных систем, которые учатся и адаптируются для решения реальных задач в различных отраслях.</p>
+                        <p class="feature-desc lang-ua">Розробка інтелектуальних систем, які навчаються та адаптуються для вирішення реальних завдань у різних галузях.</p>
+                    </div>
+                    <div class="feature-card interactive-card">
+                        <span class="feature-icon-emoji">🤖</span>
+                        <h3 class="feature-title lang-en">Robotics & Automation</h3>
+                        <h3 class="feature-title lang-ru">Робототехника и Автоматизация</h3>
+                        <h3 class="feature-title lang-ua">Робототехніка та Автоматизація</h3>
+                        <p class="feature-desc lang-en">Building advanced robotic systems that enhance productivity and safety in manufacturing and beyond.</p>
+                        <p class="feature-desc lang-ru">Создание передовых роботизированных систем, повышающих производительность и безопасность в производстве и за его пределами.</p>
+                        <p class="feature-desc lang-ua">Створення передових роботизованих систем, що підвищують продуктивність та безпеку у виробництві та за його межами.</p>
+                    </div>
+                    <div class="feature-card interactive-card">
+                        <span class="feature-icon-emoji">🌿</span>
+                        <h3 class="feature-title lang-en">Sustainable Tech</h3>
+                        <h3 class="feature-title lang-ru">Устойчивые Технологии</h3>
+                        <h3 class="feature-title lang-ua">Стійкі Технології</h3>
+                        <p class="feature-desc lang-en">Creating environmentally-friendly technologies that reduce waste and promote renewable energy solutions.</p>
+                        <p class="feature-desc lang-ru">Создание экологически чистых технологий, которые сокращают отходы и способствуют развитию решений в области возобновляемых источников энергии.</p>
+                        <p class="feature-desc lang-ua">Створення екологічно чистих технологій, що скорочують відходи та сприяють розвитку рішень у галузі відновлюваних джерел енергії.</p>
+                    </div>
+                    <div class="feature-card interactive-card">
+                        <span class="feature-icon-emoji">🔬</span>
+                        <h3 class="feature-title lang-en">Research & Development</h3>
+                        <h3 class="feature-title lang-ru">Исследования и Разработки</h3>
+                        <h3 class="feature-title lang-ua">Дослідження та Розробки</h3>
+                        <p class="feature-desc lang-en">Pioneering new technologies through rigorous research and collaborative innovation.</p>
+                        <p class="feature-desc lang-ru">Разработка новых технологий посредством тщательных исследований и совместных инноваций.</p>
+                        <p class="feature-desc lang-ua">Розробка нових технологій за допомогою ретельних досліджень та спільних інновацій.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="employees" class="section">
+            <div class="container">
+                <h2 class="section-title lang-en">Our Talented Team</h2>
+                <h2 class="section-title lang-ru">Наша Талантливая Команда</h2>
+                <h2 class="section-title lang-ua">Наша Талановита Команда</h2>
+                <div class="employee-grid">
+                    <div class="employee-card interactive-card">
+                        <img src="IceL1ghtning.png" alt="[Изображение сотрудника Артёма IceL1ghtning]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
+                        <h3 class="employee-name lang-en">Artyom IceL1ghtning</h3>
+                        <h3 class="employee-name lang-ru">Артём IceL1ghtning</h3>
+                        <h3 class="employee-name lang-ua">Артем IceL1ghtning</h3>
+                        <p class="employee-role lang-en">Lead Engineer & Developer</p>
+                        <p class="employee-role lang-ru">Главный ведущий инженер и разработчик</p>
+                        <p class="employee-role lang-ua">Головний інженер та розробник</p>
+                        <p class="feature-desc lang-en">Specializes in full-stack development and system architecture.</p>
+                        <p class="feature-desc lang-ru">Специализируется на полностековой разработке и системной архитектуре.</p>
+                        <p class="feature-desc lang-ua">Спеціалізується на повностековій розробці та системній архітектурі.</p>
+                    </div>
+                    <div class="employee-card interactive-card">
+                        <img src="Denis.png" alt="[Изображение сотрудника Дениса DedDenis]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
+                        <h3 class="employee-name lang-en">Denis DedDenis</h3>
+                        <h3 class="employee-name lang-ru">Денис DedDenis</h3>
+                        <h3 class="employee-name lang-ua">Денис DedDenis</h3>
+                        <p class="employee-role lang-en">Web Developer</p>
+                        <p class="employee-role lang-ru">Веб-разработчик</p>
+                        <p class="employee-role lang-ua">Веб-розробник</p>
+                        <p class="feature-desc lang-en">Expert in responsive design and interactive web applications.</p>
+                        <p class="feature-desc lang-ru">Эксперт в адаптивном дизайне и интерактивных веб-приложениях.</p>
+                        <p class="feature-desc lang-ua">Експерт з адаптивного дизайну та інтерактивних веб-додатків.</p>
+                    </div>
+                    <div class="employee-card interactive-card">
+                        <img src="Katya.png" alt="[Изображение сотрудника Катюши Михайлец]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
+                        <h3 class="employee-name lang-en">Katyusha Mikhailets</h3>
+                        <h3 class="employee-name lang-ru">Катюша Михайлец</h3>
+                        <h3 class="employee-name lang-ua">Катюша Михайлець</h3>
+                        <p class="employee-role lang-en">Quality Assurance Tester</p>
+                        <p class="employee-role lang-ru">Тестер</p>
+                        <p class="employee-role lang-ua">Тестувальник</p>
+                        <p class="feature-desc lang-en">Ensures the highest quality and reliability of all our projects.</p>
+                        <p class="feature-desc lang-ru">Обеспечивает высочайшее качество и надежность всех наших проектов.</p>
+                        <p class="feature-desc lang-ua">Забезпечує найвищу якість та надійність усіх наших проектів.</p>
+                    </div>
+                    <div class="employee-card interactive-card">
+                        <img src="Mihas.png" alt="[Изображение сотрудника Термоядерного Михася]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
+                        <h3 class="employee-name lang-en">Thermonuclear Mikhas</h3>
+                        <h3 class="employee-name lang-ru">Термоядерный Михась</h3>
+                        <h3 class="employee-name lang-ua">Термоядерний Михась</h3>
+                        <p class="employee-role lang-en">Quality Assurance Tester</p>
+                        <p class="employee-role lang-ru">Тестер</p>
+                        <p class="employee-role lang-ua">Тестувальник</p>
+                        <p class="feature-desc lang-en">Specializes in performance and stress testing for robust solutions.</p>
+                        <p class="feature-desc lang-ru">Специализируется на тестировании производительности и нагрузочном тестировании для надежных решений.</p>
+                        <p class="feature-desc lang-ua">Спеціалізується на тестуванні продуктивності та навантажувальному тестуванні для надійних рішень.</p>
+                    </div>
+                    <div class="employee-card interactive-card">
+                        <img src="Vadim.png" alt="[Изображение сотрудника Вадима]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
+                        <h3 class="employee-name lang-en">Vadim</h3>
+                        <h3 class="employee-name lang-ru">Вадим</h3>
+                        <h3 class="employee-name lang-ua">Вадим</h3>
+                        <p class="employee-role lang-en">Creative Director</p>
+                        <p class="employee-role lang-ru">Креативный директор</p>
+                        <p class="employee-role lang-ua">Креативний директор</p>
+                        <p class="feature-desc lang-en">Leads design and user experience, bringing innovative ideas to life.</p>
+                        <p class="feature-desc lang-ru">Руководит дизайном и пользовательским опытом, воплощая инновационные идеи в жизнь.</p>
+                        <p class="feature-desc lang-ua">Керує дизайном та користувацьким досвідом, втілюючи інноваційні ідеї в життя.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="hall-of-fame" class="section features">
+            <div class="container">
+                <h2 class="section-title lang-en">Hall of Fame</h2>
+                <h2 class="section-title lang-ru">Зал Славы</h2>
+                <h2 class="section-title lang-ua">Зал Слави</h2>
+
+                <div class="hall-of-fame-subsection">
+                    <h3 class="subsection-title lang-en">Project Hall of Fame</h3>
+                    <h3 class="subsection-title lang-ru">Зал Славы Проектов</h3>
+                    <h3 class="subsection-title lang-ua">Зал Слави Проєктів</h3>
+                    <div class="features-grid">
+                        <a href="https://colab.research.google.com/drive/11vHdZYA5fMqwh4YBSUniO7RA7ajojZc5" target="_blank" class="project-card-link">
+                            <div class="interactive-card">
+                                <h4 class="feature-title lang-en">Image Generation Notebook</h4>
+                                <h4 class="feature-title lang-ru">Ноутбук для генерации картинок</h4>
+                                <h4 class="feature-title lang-ua">Ноутбук для генерації картинок</h4>
+                                <p class="feature-desc lang-en">An open platform for rapid prototyping and collaborative research in image generation. Available to all community members.</p>
+                                <p class="feature-desc lang-ru">Открытая платформа для быстрого прототипирования и совместных исследований в области генерации изображений. Доступна всем.</p>
+                                <p class="feature-desc lang-ua">Відкрита платформа для швидкого прототипування та спільних досліджень у галузі генерації зображень. Доступна всім.</p>
+                            </div>
+                        </a>
+                        <div class="interactive-card">
+                            <h4 class="feature-title lang-en">Project "Noir" (In Development)</h4>
+                            <h4 class="feature-title lang-ru">Проект "Noir" (В разработке)</h4>
+                            <h4 class="feature-title lang-ua">Проєкт "Noir" (У розробці)</h4>
+                            <p class="feature-desc lang-en">Development of a decentralized neural network for data analysis, resistant to censorship and external influences.</p>
+                            <p class="feature-desc lang-ru">Разработка децентрализованной нейронной сети для анализа данных, устойчивой к цензуре и внешним воздействиям.</p>
+                            <p class="feature-desc lang-ua">Розробка децентралізованої нейронної мережі для аналізу даних, стійкої до цензури та зовнішніх впливів.</p>
+                        </div>
+                        <div class="interactive-card">
+                            <h4 class="feature-title lang-en">Telegram Bot "R2-D2" (In Development)</h4>
+                            <h4 class="feature-title lang-ru">Телеграм Бот "R2-D2" (В разработке)</h4>
+                            <h4 class="feature-title lang-ua">Телеграм Бот "R2-D2" (У розробці)</h4>
+                            <p class="feature-desc lang-en">A multifunctional assistant bot for our Telegram community, helping with moderation and providing useful information.</p>
+                            <p class="feature-desc lang-ru">Многофункциональный бот-помощник для нашего Telegram-сообщества, помогающий с модерацией и предоставлением полезной информации.</p>
+                            <p class="feature-desc lang-ua">Багатофункціональний бот-помічник для нашої Telegram-спільноти, що допомагає з модерацією та наданням корисної інформації.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hall-of-fame-subsection">
+                    <h3 class="subsection-title lang-en">Community Hall of Fame</h3>
+                    <h3 class="subsection-title lang-ru">Зал Славы Сообщества</h3>
+                    <h3 class="subsection-title lang-ua">Зал Слави Спільноти</h3>
+                    <p class="subsection-description lang-en">We are immensely grateful to everyone who supports our community. Your contribution helps us move forward and implement new ideas. Thank you!</p>
+                    <p class="subsection-description lang-ru">Мы безмерно благодарны всем, кто поддерживает наше сообщество. Ваш вклад помогает нам двигаться вперед и реализовывать новые идеи. Спасибо!</p>
+                    <p class="subsection-description lang-ua">Ми безмежно вдячні всім, хто підтримує нашу спільноту. Ваш внесок допомагає нам рухатися вперед і реалізовувати нові ідеї. Дякуємо!</p>
+                    <div class="donors-grid">
+                        <div class="donor-chip">Marci is Marci</div>
+                        <div class="donor-chip">Volti</div>
+                        <div class="donor-chip">Calamitos</div>
+                        <div class="donor-chip">Polina ENFP</div>
+                    </div>
+                </div>
+
+                <div class="donation-section">
+                    <div class="container">
+                        <h3 class="lang-en">Support Our Innovation</h3>
+                        <h3 class="lang-ru">Поддержите Наши Инновации</h3>
+                        <h3 class="lang-ua">Підтримайте Наші Інновації</h3>
+                        <p class="lang-en">Your generous contributions enable us to continue our research, develop groundbreaking technologies, and expand our community. Every donation, big or small, makes a significant impact. Thank you for being a part of our journey!</p>
+                        <p class="lang-ru">Ваши щедрые пожертвования позволяют нам продолжать исследования, разрабатывать прорывные технологии и расширять наше сообщество. Каждое пожертвование, большое или маленькое, оказывает значительное влияние. Спасибо, что являетесь частью нашего пути!</p>
+                        <p class="lang-ua">Ваші щедрі пожертви дозволяють нам продовжувати дослідження, розробляти проривні технології та розширювати нашу спільноту. Кожна пожертва, велика чи маленька, має значний вплив. Дякуємо, що є частиною нашої подорожі!</p>
+
+                        <div class="wallet-grid">
+                            <!-- Ko-fi Card -->
+                            <div class="kofi-card">
+                                <svg class="kofi-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_108_2)"><path fill-rule="evenodd" clip-rule="evenodd" d="M18.435 2.455C18.5264 2.45493 18.6171 2.46463 18.704 2.483C19.824 2.693 20.655 3.734 20.445 4.854L19.22 11.475C19.167 11.787 19.01 12.069 18.783 12.274C18.556 12.478 18.274 12.593 17.98 12.6L15.08 12.6C14.786 12.6 14.504 12.478 14.277 12.274C14.05 12.069 13.893 11.787 13.84 11.475L13.52 9.6C13.467 9.288 13.31 9.006 13.083 8.801C12.856 8.597 12.574 8.482 12.28 8.4H6.8C6.506 8.4 6.224 8.522 5.997 8.726C5.77 8.931 5.613 9.213 5.56 9.525L4.34 16.146C4.13 17.266 4.961 18.307 6.081 18.517C6.16886 18.5354 6.25841 18.5441 6.348 18.545H16.43C19.31 18.545 21.58 16.275 21.58 13.395V7.435C21.58 4.695 19.83 2.695 18.435 2.455ZM0 3.399C0 2.069 1.07 0.999 2.4 0.999H10.8C12.13 0.999 13.2 2.069 13.2 3.399V6H2.4C1.07 6 0 4.93 0 3.399Z" fill="white"/></g><defs><clipPath id="clip0_108_2"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+                                <h4 class="lang-en">Buy Us a Coffee</h4>
+                                <h4 class="lang-ru">Угостите нас кофе</h4>
+                                <h4 class="lang-ua">Пригостіть нас кавою</h4>
+                                <p class="lang-en">If you like our work, consider supporting us with a small donation. It helps us stay energized and focused on creating new things!</p>
+                                <p class="lang-ru">Если вам нравится наша работа, поддержите нас небольшим пожертвованием. Это помогает нам оставаться бодрыми и сосредоточенными на создании нового!</p>
+                                <p class="lang-ua">Якщо вам подобається наша робота, підтримайте нас невеликою пожертвою. Це допомагає нам залишатися енергійними та зосередженими на створенні нового!</p>
+                                <a href="https://ko-fi.com/engineerglab" target="_blank" class="kofi-btn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M13 7h-2v5H8v2h3v3h2v-3h3v-2h-3z"></path></svg>
+                                    <span class="lang-en">Support on Ko-fi</span>
+                                    <span class="lang-ru">Поддержать на Ko-fi</span>
+                                    <span class="lang-ua">Підтримати на Ko-fi</span>
+                                </a>
+                            </div>
+
+                            <!-- Crypto Wallets -->
+                            <div class="wallet-item">
+                                <h4>USDT (TON)</h4>
+                                <p class="wallet-address" id="usdt-ton-address">UQDmSzTmIvSry2FE0G6Fmj3gJUC5KbExzEXKUlc0PwYHw5AO</p>
+                                <button class="copy-btn" data-clipboard-target="#usdt-ton-address">
+                                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                    <span class="lang-en">Copy</span><span class="lang-ru">Копировать</span><span class="lang-ua">Копіювати</span>
+                                </button>
+                                <span class="copy-message lang-en">Copied!</span>
+                                <span class="copy-message lang-ru">Скопировано!</span>
+                                <span class="copy-message lang-ua">Скопійовано!</span>
+                            </div>
+                            <div class="wallet-item">
+                                <h4>USDT (TRC20)</h4>
+                                <p class="wallet-address" id="usdt-trc20-address">TKGUEbLU5AVhbsmbnYrewm3fAHc7HhhG7s</p>
+                                <button class="copy-btn" data-clipboard-target="#usdt-trc20-address">
+                                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                    <span class="lang-en">Copy</span><span class="lang-ru">Копировать</span><span class="lang-ua">Копіювати</span>
+                                </button>
+                                <span class="copy-message lang-en">Copied!</span>
+                                <span class="copy-message lang-ru">Скопировано!</span>
+                                <span class="copy-message lang-ua">Скопійовано!</span>
+                            </div>
+                            <div class="wallet-item">
+                                <h4>TON</h4>
+                                <p class="wallet-address" id="ton-address">UQDmSzTmIvSry2FE0G6Fmj3gJUC5KbExzEXKUlc0PwYHw5AO</p>
+                                <button class="copy-btn" data-clipboard-target="#ton-address">
+                                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                    <span class="lang-en">Copy</span><span class="lang-ru">Копировать</span><span class="lang-ua">Копіювати</span>
+                                </button>
+                                <span class="copy-message lang-en">Copied!</span>
+                                <span class="copy-message lang-ru">Скопировано!</span>
+                                <span class="copy-message lang-ua">Скопійовано!</span>
+                            </div>
+                            <div class="wallet-item">
+                                <h4>BTC</h4>
+                                <p class="wallet-address" id="btc-address">1NDU5p4RGs541WEj7ceD3Su6XJ926iMx3e</p>
+                                <button class="copy-btn" data-clipboard-target="#btc-address">
+                                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                    <span class="lang-en">Copy</span><span class="lang-ru">Копировать</span><span class="lang-ua">Копіювати</span>
+                                </button>
+                                <span class="copy-message lang-en">Copied!</span>
+                                <span class="copy-message lang-ru">Скопировано!</span>
+                                <span class="copy-message lang-ua">Скопійовано!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta">
+            <div class="container">
+                <h2 class="section-title lang-en">Ready to collaborate?</h2>
+                <h2 class="section-title lang-ru">Готовы к сотрудничеству?</h2>
+                <h2 class="section-title lang-ua">Готові до співпраці?</h2>
+                <p class="lang-en">Whether you're looking for research partnerships, consulting, or custom engineering solutions, we'd love to hear from you.</p>
+                <p class="lang-ru">Ищете ли вы партнерства в исследованиях, консалтинг или индивидуальные инженерные решения, мы будем рады услышать от вас.</p>
+                <p class="lang-ua">Чи шукаєте ви партнерства в дослідженнях, консалтинг або індивідуальні інженерні рішення, ми будемо раді почути вас.</p>
+                <a href="mailto:engineerglab@gmail.com?subject=Collaboration%20Inquiry%20from%20Website&body=Dear%20EngineerG%20Lab%20Team%2C%0A%0AI%20am%20interested%20in%20discussing%20a%20potential%20collaboration%20regarding%3A%0A%0A[Your%20message%20here]%0A%0ABest%20regards%2C%0A[Your%20Name]" class="btn lang-en">Get in Touch</a>
+                <a href="mailto:engineerglab@gmail.com?subject=Запрос%20о%20сотрудничестве%20с%20сайта&body=Уважаемая%20команда%20EngineerG%20Lab%2C%0A%0AЯ%20заинтересован%20в%20обсуждении%20потенциального%20сотрудничества%20по%20поводу%3A%0A%0A[Ваше%20сообщение%20здесь]%0A%20уважением%2C%0A[Ваше%20имя]" class="btn lang-ru">Связаться с нами</a>
+                <a href="mailto:engineerglab@gmail.com?subject=Запит%20про%20співпрацю%20з%20сайту&body=Шановна%20команда%20EngineerG%20Lab%2C%0A%0AЯ%20зацікавлений%20в%20обговоренні%20потенційної%20співпраці%20щодо%3A%0A%0A[Ваше%20повідомлення%20тут]%0A%0AЗ%20повагою%2C%0A[Ваше%20Ім'я]" class="btn lang-ua">Зв'язатися з нами</a>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <h3>EngineerG Lab</h3>
+                <div class="social-links">
+                    <a href="https://t.me/LogovoOfEngineer" target="_blank" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.69 7.61l-1.32 6.2c-.08.39-.3.49-.6.31l-2.96-2.18-1.43 1.37c-.16.16-.29.29-.5.29l.21-3.03 5.3-4.8c.23-.21-.03-.33-.35-.12l-6.53 4.08-2.91-.9c-.39-.12-.4-.39.08-.58l11.45-4.42c.32-.12.6.2.4.51z"></path></svg></a>
+                    <a href="https://instagram.com/engineerglab" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6m6.4 2.4a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"></path></svg></a>
+                    <a href="https://github.com/EngineerG-Lab" target="_blank" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 22 12C22 6.48 17.52 2 12 2z"></path></svg></a>
+                </div>
+                <p class="contact-email">
+                    <svg viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"></path></svg>
+                    <span class="lang-en">Email:</span><span class="lang-ru">Почта:</span><span class="lang-ua">Пошта:</span> <a href="mailto:engineerglab@gmail.com">engineerglab@gmail.com</a>
+                </p>
+                <p class="copyright lang-en"></p>
+                <p class="copyright lang-ru"></p>
+                <p class="copyright lang-ua"></p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="scroll-to-top" aria-label="Scroll to top">⬆️</button>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const htmlEl = document.documentElement;
+        const languageDropdown = document.getElementById('language-dropdown');
+        const currentLangBtn = document.getElementById('current-lang-btn');
+        const dropdownContent = document.getElementById('dropdown-content');
+        const langOptions = document.querySelectorAll('.lang-option');
+
+        // Language data
+        const languages = {
+            en: { flag: '🇬🇧', text: 'EN' },
+            ru: { flag: '🏴‍☠️', text: 'RU' },
+            ua: { flag: '🇺🇦', text: 'UA' }
+        };
+
+        function setLanguage(lang) {
+            if (!languages[lang]) return;
+
+            // Update HTML lang attribute
+            htmlEl.setAttribute('lang', lang);
+            
+            // Update the main button
+            currentLangBtn.innerHTML = `<span class="flag-icon">${languages[lang].flag}</span> ${languages[lang].text}`;
+
+            // Update active class in dropdown
+            langOptions.forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.lang === lang);
+            });
+
+            // Save to localStorage
+            localStorage.setItem('engineerglab_lang', lang);
+            
+            // Close dropdown
+            languageDropdown.classList.remove('show');
+        }
+
+        // Toggle dropdown visibility
+        currentLangBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            languageDropdown.classList.toggle('show');
+        });
+
+        // Set language on option click
+        langOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.preventDefault();
+                const newLang = e.currentTarget.dataset.lang;
+                setLanguage(newLang);
+            });
+        });
+
+        // Close dropdown if clicked outside
+        window.addEventListener('click', (e) => {
+            if (!languageDropdown.contains(e.target)) {
+                languageDropdown.classList.remove('show');
+            }
+        });
+
+        // --- Initial Language Setup ---
+        const savedLang = localStorage.getItem('engineerglab_lang') || (navigator.language.startsWith('uk') ? 'ua' : (navigator.language.startsWith('ru') ? 'ru' : 'en'));
+        setLanguage(savedLang in languages ? savedLang : 'en');
+
+
+        // --- Theme Toggle Logic (unchanged) ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const bodyEl = document.body;
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                bodyEl.classList.add('dark-mode');
+            } else {
+                bodyEl.classList.remove('dark-mode');
+            }
+            localStorage.setItem('engineerglab_theme', theme);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = bodyEl.classList.contains('dark-mode') ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+
+        const savedTheme = localStorage.getItem('engineerglab_theme') || 'light';
+        applyTheme(savedTheme);
+
+        // --- Copyright Year (updated for UA) ---
+        const currentYear = new Date().getFullYear();
+        document.querySelectorAll('.copyright.lang-en').forEach(el => el.textContent = `© ${currentYear} EngineerG Lab. All rights reserved.`);
+        document.querySelectorAll('.copyright.lang-ru').forEach(el => el.textContent = `© ${currentYear} EngineerG Lab. Все права защищены.`);
+        document.querySelectorAll('.copyright.lang-ua').forEach(el => el.textContent = `© ${currentYear} EngineerG Lab. Всі права захищені.`);
+
+
+        // --- Scroll and Animation Logic (unchanged) ---
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+        const scrollProgress = document.getElementById('scroll-progress');
+        const header = document.querySelector('header');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            scrollToTopBtn.classList.toggle('show', scrollTop > 300);
+            header.classList.toggle('scrolled', scrollTop > 50);
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (scrollTop / scrollHeight) * 100;
+            scrollProgress.style.width = scrolled + '%';
+        });
+
+        scrollToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
+
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const interactiveElements = document.querySelectorAll('a, button, .interactive-card, .copy-btn');
+
+        window.addEventListener('mousemove', e => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.style.left = `${posX}px`;
+            cursorOutline.style.top = `${posY}px`;
+        });
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-interact'));
+            el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-interact'));
+        });
+
+        const tiltCards = document.querySelectorAll('.interactive-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const { width, height } = rect;
+                const rotateX = (y - height / 2) / (height / 2) * -7;
+                const rotateY = (x - width / 2) / (width / 2) * 7;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+            });
+        });
+
+        // --- Copy Button Logic (updated for UA) ---
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.dataset.clipboardTarget;
+                const targetElement = document.querySelector(targetId);
+                const textToCopy = targetElement.textContent;
+
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    
+                    const messageSpans = this.parentElement.querySelectorAll('.copy-message');
+
+                    messageSpans.forEach(span => span.classList.add('show'));
+
+                    setTimeout(() => {
+                        messageSpans.forEach(span => span.classList.remove('show'));
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(textarea);
+            });
+        });
+    });
+    </script>
+</body>
+</html>
