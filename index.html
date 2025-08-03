@@ -113,7 +113,7 @@
         .cursor-interact {
             transform: scale(1.5);
         }
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .cursor-dot, .cursor-outline { display: none; }
             html { cursor: auto; }
         }
@@ -128,6 +128,9 @@
         /* Ensure default cursor is hidden on interactive elements */
         a, button, .interactive-card, .copy-btn {
             cursor: none !important; 
+        }
+        @media (max-width: 1024px) {
+            a, button, .interactive-card, .copy-btn { cursor: pointer !important; }
         }
 
         header {
@@ -151,34 +154,46 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 1rem;
         }
         
         .logo-img {
             height: 50px;
             width: auto;
             border-radius: 8px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s;
+            flex-shrink: 0;
         }
 
         .logo-img:hover {
             transform: scale(1.05);
+            box-shadow: 0 0 15px var(--orange-light);
+        }
+
+        .nav-and-controls-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            min-width: 0; /* Fix flexbox overflow issue */
+        }
+
+        nav {
+            min-width: 0;
         }
         
         nav ul {
             display: flex;
             list-style: none;
             gap: 1.5rem;
-            justify-content: center;
         }
         
         nav a {
             text-decoration: none;
             color: var(--text-primary);
             font-weight: 500;
-            transition: color 0.2s;
+            transition: color 0.2s, background-image 0.3s;
             position: relative;
             padding: 0.5rem 0;
+            white-space: nowrap; /* Prevent text wrapping */
         }
 
         nav a::after {
@@ -192,11 +207,11 @@
             transition: width 0.3s ease-out;
         }
 
-        nav a:hover::after {
+        nav a:hover::after, nav a.active::after {
             width: 100%;
         }
 
-        nav a:hover {
+        nav a:hover, nav a.active {
             background-image: linear-gradient(90deg, var(--orange-primary), var(--orange-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -212,7 +227,6 @@
         /* Language Dropdown Styles */
         .language-dropdown {
             position: relative;
-            display: inline-block;
         }
 
         .language-dropdown .current-lang-btn {
@@ -312,6 +326,65 @@
         body:not(.dark-mode) .sun-icon { display: block; }
         body.dark-mode .moon-icon { display: block; }               
 
+        /* Mobile Menu Button */
+        .mobile-menu-toggle {
+            display: none;
+            background-color: var(--orange-primary);
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            z-index: 102;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, transform 0.3s;
+            overflow: hidden;
+        }
+        .mobile-menu-toggle:hover {
+             background-color: var(--orange-dark);
+             transform: scale(1.1);
+        }
+        .mobile-menu-toggle .icon-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+        }
+        .mobile-menu-toggle .power-icon,
+        .mobile-menu-toggle .cross-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
+        }
+        .mobile-menu-toggle .power-icon {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+        .mobile-menu-toggle .cross-icon {
+            opacity: 0;
+            transform: scale(0.5) rotate(-90deg);
+        }
+        body.menu-open .mobile-menu-toggle .power-icon {
+            opacity: 0;
+            transform: scale(0.5) rotate(90deg);
+        }
+        body.menu-open .mobile-menu-toggle .cross-icon {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+        body.menu-closing .mobile-menu-toggle .cross-icon {
+            transform: translateY(-30px) rotate(90deg);
+            opacity: 0;
+            transition: transform 0.4s ease-in, opacity 0.3s ease-in;
+        }
+
+
         .hero {
             padding: 6rem 0;
             text-align: center;
@@ -320,7 +393,7 @@
             box-shadow: 0 8px 16px var(--card-shadow);
             overflow: hidden;
             position: relative;
-            background-image: url('background.jpg');
+            background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1740&auto=format&fit=crop');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
@@ -904,27 +977,159 @@
         .contact-email a { color: var(--footer-text); text-decoration: none; font-weight: 600; }
         .contact-email a:hover { text-decoration: underline; }
         
-        @media (max-width: 1024px) {
-            .header-container { 
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            nav {
-                order: 3;
-                width: 100%;
-                margin-top: 1rem;
-            }
+        /* --- Responsive Styles --- */
+        
+        /* FIX: For small desktops / large tablets where long words wrap */
+        @media (max-width: 1200px) and (min-width: 1025px) {
             nav ul {
-                flex-wrap: wrap;
                 gap: 1rem;
             }
-            .header-controls {
-                order: 2;
+            nav a {
+                font-size: 0.9rem;
             }
-            .logo-img {
-                order: 1;
+            .nav-and-controls-wrapper {
+                gap: 1rem;
             }
         }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                order: 1; /* Make it the last item in the flex order */
+            }
+            .header-container {
+                justify-content: space-between;
+            }
+            .logo-img {
+                order: -1; /* Make it the first item */
+            }
+
+            .nav-and-controls-wrapper {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 300px;
+                max-width: 80%;
+                height: 100vh; /* Full viewport height */
+                background-color: var(--bg-secondary);
+                box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+                
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: space-between; /* Push controls to bottom */
+                gap: 1rem;
+                padding: 80px 1rem 2rem 1rem;
+
+                transform: translateX(-100%);
+                transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+                z-index: 101;
+                overflow-y: auto;
+            }
+            body.menu-open .nav-and-controls-wrapper {
+                transform: translateX(0);
+            }
+
+            .nav-and-controls-wrapper nav {
+                flex-grow: 0; /* Don't let it grow, just take space it needs */
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+                width: 100%;
+            }
+            nav li {
+                width: 100%;
+                opacity: 0;
+                transform: translateX(-20px);
+                transition: opacity 0.4s ease, transform 0.4s ease;
+            }
+            /* Staggered animation for menu items */
+            body.menu-open nav li {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            body.menu-open nav li:nth-child(1) { transition-delay: 0.1s; }
+            body.menu-open nav li:nth-child(2) { transition-delay: 0.15s; }
+            body.menu-open nav li:nth-child(3) { transition-delay: 0.2s; }
+            body.menu-open nav li:nth-child(4) { transition-delay: 0.25s; }
+            body.menu-open nav li:nth-child(5) { transition-delay: 0.3s; }
+            body.menu-open nav li:nth-child(6) { transition-delay: 0.35s; }
+            body.menu-open nav li:nth-child(7) { transition-delay: 0.4s; }
+
+            nav a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 1rem;
+                width: 100%;
+                border-radius: 8px;
+                font-size: 1.1rem;
+            }
+            nav a::after {
+                display: none;
+            }
+            nav a:hover, nav a.active {
+                background-image: none;
+                -webkit-text-fill-color: inherit;
+                color: var(--text-primary);
+                background-color: rgba(255, 165, 0, 0.1);
+            }
+            nav a.active {
+                font-weight: 700;
+                color: var(--orange-dark);
+                border-bottom: 2px solid var(--orange-secondary);
+            }
+            nav a.active::before {
+                content: '●';
+                color: var(--orange-primary);
+                font-size: 0.8em;
+                line-height: 1;
+            }
+            body.dark-mode nav a.active {
+                color: var(--orange-light);
+            }
+            
+            .header-controls {
+                flex-direction: row; /* FIX: Keep controls in a row */
+                justify-content: space-around; /* Space them out */
+                align-items: center;
+                width: 100%;
+                gap: 1.5rem;
+                padding-top: 1.5rem;
+                border-top: 1px solid var(--border-color);
+            }
+            .language-dropdown .dropdown-content {
+                bottom: 100%; /* Open dropdown upwards */
+                top: auto;
+                margin-bottom: 5px;
+                transform: translateY(10px);
+            }
+            .language-dropdown.show .dropdown-content {
+                transform: translateY(0);
+            }
+
+            .menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 99;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.4s, visibility 0.4s;
+            }
+            body.menu-open .menu-overlay {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
@@ -932,7 +1137,6 @@
             .section { padding: 3rem 0; }
             .section-title { font-size: 2rem; }
             .employee-grid { grid-template-columns: 1fr; }
-            nav ul { flex-direction: column; align-items: center; gap: 0.5rem; }
             .wallet-grid { grid-template-columns: 1fr; }
         }
         
@@ -954,7 +1158,7 @@
             opacity: 0; visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 99;
+            z-index: 98; /* Below menu overlay */
         }
         #scroll-to-top.show { opacity: 1; visibility: visible; }
         #scroll-to-top:hover {
@@ -968,6 +1172,7 @@
             background: linear-gradient(90deg, var(--orange-primary), var(--orange-dark));
             z-index: 1000;
             width: 0%;
+            transition: width 0.1s linear; /* Smooth out progress bar updates */
         }
     </style>
 </head>
@@ -979,46 +1184,53 @@
     <header>
         <div class="container header-container">
             <a href="#home"><img src="https://placehold.co/200x50/FF8C00/ffffff?text=EngineerG+Lab&font=spacemono" alt="EngineerG Lab Logo" class="logo-img"></a>
-            <nav>
-                <ul>
-                    <li><a href="#home" class="lang-en">Home</a><a href="#home" class="lang-ru">Главная</a><a href="#home" class="lang-ua">Головна</a></li>
-                    <li><a href="#history" class="lang-en">History</a><a href="#history" class="lang-ru">История</a><a href="#history" class="lang-ua">Історія</a></li>
-                    <li><a href="#philosophy" class="lang-en">Our Philosophy</a><a href="#philosophy" class="lang-ru">Наша Философия</a><a href="#philosophy" class="lang-ua">Наша Філософія</a></li>
-                    <li><a href="#offerings" class="lang-en">Offerings</a><a href="#offerings" class="lang-ru">Предложения</a><a href="#offerings" class="lang-ua">Пропозиції</a></li>
-                    <li><a href="#employees" class="lang-en">Employees</a><a href="#employees" class="lang-ru">Сотрудники</a><a href="#employees" class="lang-ua">Співробітники</a></li>
-                    <li><a href="#hall-of-fame" class="lang-en">Hall of Fame</a><a href="#hall-of-fame" class="lang-ru">Зал Славы</a><a href="#hall-of-fame" class="lang-ua">Зал Слави</a></li>
-                    <li><a href="#contact" class="lang-en">Contact</a><a href="#contact" class="lang-ru">Контакты</a><a href="#contact" class="lang-ua">Контакти</a></li>
-                </ul>
-            </nav>
-            <div class="header-controls">
-                <div class="language-dropdown" id="language-dropdown">
-                    <button class="current-lang-btn" id="current-lang-btn">
-                        <!-- Content will be set by JS -->
-                    </button>
-                    <div class="dropdown-content" id="dropdown-content">
-                        <a href="#" class="lang-option" data-lang="en">
-                            <span class="flag-icon">🇬🇧</span>
-                            <span>English</span>
-                        </a>
-                        <a href="#" class="lang-option" data-lang="ru">
-                            <span class="flag-icon">🏴‍☠️</span>
-                            <span>Русский</span>
-                        </a>
-                        <a href="#" class="lang-option" data-lang="ua">
-                            <span class="flag-icon">🇺🇦</span>
-                            <span>Українська</span>
-                        </a>
+            
+            <div class="nav-and-controls-wrapper">
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="#home" class="lang-en">Home</a><a href="#home" class="lang-ru">Главная</a><a href="#home" class="lang-ua">Головна</a></li>
+                        <li><a href="#history" class="lang-en">History</a><a href="#history" class="lang-ru">История</a><a href="#history" class="lang-ua">Історія</a></li>
+                        <li><a href="#philosophy" class="lang-en">Our Philosophy</a><a href="#philosophy" class="lang-ru">Наша Философия</a><a href="#philosophy" class="lang-ua">Наша Філософія</a></li>
+                        <li><a href="#offerings" class="lang-en">Offerings</a><a href="#offerings" class="lang-ru">Предложения</a><a href="#offerings" class="lang-ua">Пропозиції</a></li>
+                        <li><a href="#employees" class="lang-en">Employees</a><a href="#employees" class="lang-ru">Сотрудники</a><a href="#employees" class="lang-ua">Співробітники</a></li>
+                        <li><a href="#hall-of-fame" class="lang-en">Hall of Fame</a><a href="#hall-of-fame" class="lang-ru">Зал Славы</a><a href="#hall-of-fame" class="lang-ua">Зал Слави</a></li>
+                        <li><a href="#contact" class="lang-en">Contact</a><a href="#contact" class="lang-ru">Контакты</a><a href="#contact" class="lang-ua">Контакти</a></li>
+                    </ul>
+                </nav>
+                <div class="header-controls">
+                    <div class="language-dropdown" id="language-dropdown">
+                        <button class="current-lang-btn" id="current-lang-btn"></button>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <a href="#" class="lang-option" data-lang="en"><span class="flag-icon">🇬🇧</span><span>English</span></a>
+                            <a href="#" class="lang-option" data-lang="ru"><span class="flag-icon">🏴‍☠️</span><span>Русский</span></a>
+                            <a href="#" class="lang-option" data-lang="ua"><span class="flag-icon">🇺🇦</span><span>Українська</span></a>
+                        </div>
                     </div>
+                    <button id="theme-toggle" aria-label="Toggle theme">
+                        <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </button>
                 </div>
-                <button id="theme-toggle" aria-label="Toggle theme">
-                    <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </button>
             </div>
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+                <div class="icon-container">
+                    <svg class="power-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="7" x2="12" y2="14" />
+                        <path d="M8,10 A6,6 0 1 1 16,10" />
+                    </svg>
+                    <svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                    </svg>
+                </div>
+            </button>
         </div>
     </header>
+    
+    <div class="menu-overlay"></div>
 
     <main>
+        <!-- HERO SECTION -->
         <section id="home" class="hero">
             <div class="container">
                 <h1 class="lang-en">Innovating the Future of Engineering</h1>
@@ -1033,6 +1245,7 @@
             </div>
         </section>
 
+        <!-- HISTORY SECTION -->
         <section id="history" class="section">
             <div class="container">
                 <h2 class="section-title lang-en">Our History</h2>
@@ -1062,6 +1275,7 @@
             </div>
         </section>
 
+        <!-- PHILOSOPHY SECTION -->
         <section id="philosophy" class="section">
             <div class="container">
                 <h2 class="section-title lang-en">Our Philosophy: Creating the Future with Responsibility</h2>
@@ -1146,12 +1360,14 @@
             </div>
         </section>
 
+        <!-- OFFERINGS SECTION -->
         <section id="offerings" class="section features">
             <div class="container">
                 <h2 class="section-title lang-en">Our Key Offerings</h2>
                 <h2 class="section-title lang-ru">Наши Ключевые Предложения</h2>
                 <h2 class="section-title lang-ua">Наші Ключові Пропозиції</h2>
                 <div class="features-grid">
+                    <!-- EDITABLE: Feature 1 -->
                     <div class="feature-card interactive-card">
                         <span class="feature-icon-emoji">🧠</span>
                         <h3 class="feature-title lang-en">AI & Machine Learning</h3>
@@ -1161,6 +1377,7 @@
                         <p class="feature-desc lang-ru">Разработка интеллектуальных систем, которые учатся и адаптируются для решения реальных задач в различных отраслях.</p>
                         <p class="feature-desc lang-ua">Розробка інтелектуальних систем, які навчаються та адаптуються для вирішення реальних завдань у різних галузях.</p>
                     </div>
+                    <!-- EDITABLE: Feature 2 -->
                     <div class="feature-card interactive-card">
                         <span class="feature-icon-emoji">🤖</span>
                         <h3 class="feature-title lang-en">Robotics & Automation</h3>
@@ -1170,6 +1387,7 @@
                         <p class="feature-desc lang-ru">Создание передовых роботизированных систем, повышающих производительность и безопасность в производстве и за его пределами.</p>
                         <p class="feature-desc lang-ua">Створення передових роботизованих систем, що підвищують продуктивність та безпеку у виробництві та за його межами.</p>
                     </div>
+                    <!-- EDITABLE: Feature 3 -->
                     <div class="feature-card interactive-card">
                         <span class="feature-icon-emoji">🌿</span>
                         <h3 class="feature-title lang-en">Sustainable Tech</h3>
@@ -1179,6 +1397,7 @@
                         <p class="feature-desc lang-ru">Создание экологически чистых технологий, которые сокращают отходы и способствуют развитию решений в области возобновляемых источников энергии.</p>
                         <p class="feature-desc lang-ua">Створення екологічно чистих технологій, що скорочують відходи та сприяють розвитку рішень у галузі відновлюваних джерел енергії.</p>
                     </div>
+                    <!-- EDITABLE: Feature 4 -->
                     <div class="feature-card interactive-card">
                         <span class="feature-icon-emoji">🔬</span>
                         <h3 class="feature-title lang-en">Research & Development</h3>
@@ -1192,12 +1411,14 @@
             </div>
         </section>
 
+        <!-- EMPLOYEES SECTION -->
         <section id="employees" class="section">
             <div class="container">
                 <h2 class="section-title lang-en">Our Talented Team</h2>
                 <h2 class="section-title lang-ru">Наша Талантливая Команда</h2>
                 <h2 class="section-title lang-ua">Наша Талановита Команда</h2>
                 <div class="employee-grid">
+                    <!-- EDITABLE: Employee 1 -->
                     <div class="employee-card interactive-card">
                         <img src="IceL1ghtning.png" alt="[Изображение сотрудника Артёма IceL1ghtning]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
                         <h3 class="employee-name lang-en">Artyom IceL1ghtning</h3>
@@ -1210,6 +1431,7 @@
                         <p class="feature-desc lang-ru">Специализируется на полностековой разработке и системной архитектуре.</p>
                         <p class="feature-desc lang-ua">Спеціалізується на повностековій розробці та системній архітектурі.</p>
                     </div>
+                    <!-- EDITABLE: Employee 2 -->
                     <div class="employee-card interactive-card">
                         <img src="Denis.png" alt="[Изображение сотрудника Дениса DedDenis]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
                         <h3 class="employee-name lang-en">Denis DedDenis</h3>
@@ -1222,6 +1444,7 @@
                         <p class="feature-desc lang-ru">Эксперт в адаптивном дизайне и интерактивных веб-приложениях.</p>
                         <p class="feature-desc lang-ua">Експерт з адаптивного дизайну та інтерактивних веб-додатків.</p>
                     </div>
+                    <!-- EDITABLE: Employee 3 -->
                     <div class="employee-card interactive-card">
                         <img src="Katya.png" alt="[Изображение сотрудника Катюши Михайлец]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
                         <h3 class="employee-name lang-en">Katyusha Mikhailets</h3>
@@ -1234,6 +1457,7 @@
                         <p class="feature-desc lang-ru">Обеспечивает высочайшее качество и надежность всех наших проектов.</p>
                         <p class="feature-desc lang-ua">Забезпечує найвищу якість та надійність усіх наших проектів.</p>
                     </div>
+                    <!-- EDITABLE: Employee 4 -->
                     <div class="employee-card interactive-card">
                         <img src="Mihas.png" alt="[Изображение сотрудника Термоядерного Михася]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
                         <h3 class="employee-name lang-en">Thermonuclear Mikhas</h3>
@@ -1246,6 +1470,7 @@
                         <p class="feature-desc lang-ru">Специализируется на тестировании производительности и нагрузочном тестировании для надежных решений.</p>
                         <p class="feature-desc lang-ua">Спеціалізується на тестуванні продуктивності та навантажувальному тестуванні для надійних рішень.</p>
                     </div>
+                    <!-- EDITABLE: Employee 5 -->
                     <div class="employee-card interactive-card">
                         <img src="Vadim.png" alt="[Изображение сотрудника Вадима]" class="employee-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=Img';">
                         <h3 class="employee-name lang-en">Vadim</h3>
@@ -1262,6 +1487,7 @@
             </div>
         </section>
 
+        <!-- HALL OF FAME SECTION -->
         <section id="hall-of-fame" class="section features">
             <div class="container">
                 <h2 class="section-title lang-en">Hall of Fame</h2>
@@ -1273,6 +1499,7 @@
                     <h3 class="subsection-title lang-ru">Зал Славы Проектов</h3>
                     <h3 class="subsection-title lang-ua">Зал Слави Проєктів</h3>
                     <div class="features-grid">
+                        <!-- EDITABLE: Project 1 -->
                         <a href="https://colab.research.google.com/drive/11vHdZYA5fMqwh4YBSUniO7RA7ajojZc5" target="_blank" class="project-card-link">
                             <div class="interactive-card">
                                 <h4 class="feature-title lang-en">Image Generation Notebook</h4>
@@ -1283,6 +1510,7 @@
                                 <p class="feature-desc lang-ua">Відкрита платформа для швидкого прототипування та спільних досліджень у галузі генерації зображень. Доступна всім.</p>
                             </div>
                         </a>
+                        <!-- EDITABLE: Project 2 -->
                         <div class="interactive-card">
                             <h4 class="feature-title lang-en">Project "Noir" (In Development)</h4>
                             <h4 class="feature-title lang-ru">Проект "Noir" (В разработке)</h4>
@@ -1291,6 +1519,7 @@
                             <p class="feature-desc lang-ru">Разработка децентрализованной нейронной сети для анализа данных, устойчивой к цензуре и внешним воздействиям.</p>
                             <p class="feature-desc lang-ua">Розробка децентралізованої нейронної мережі для аналізу даних, стійкої до цензури та зовнішніх впливів.</p>
                         </div>
+                        <!-- EDITABLE: Project 3 -->
                         <div class="interactive-card">
                             <h4 class="feature-title lang-en">Telegram Bot "R2-D2" (In Development)</h4>
                             <h4 class="feature-title lang-ru">Телеграм Бот "R2-D2" (В разработке)</h4>
@@ -1306,10 +1535,12 @@
                     <h3 class="subsection-title lang-en">Community Hall of Fame</h3>
                     <h3 class="subsection-title lang-ru">Зал Славы Сообщества</h3>
                     <h3 class="subsection-title lang-ua">Зал Слави Спільноти</h3>
+                    <!-- EDITABLE: Community Thanks Message -->
                     <p class="subsection-description lang-en">We are immensely grateful to everyone who supports our community. Your contribution helps us move forward and implement new ideas. Thank you!</p>
                     <p class="subsection-description lang-ru">Мы безмерно благодарны всем, кто поддерживает наше сообщество. Ваш вклад помогает нам двигаться вперед и реализовывать новые идеи. Спасибо!</p>
                     <p class="subsection-description lang-ua">Ми безмежно вдячні всім, хто підтримує нашу спільноту. Ваш внесок допомагає нам рухатися вперед і реалізовувати нові ідеї. Дякуємо!</p>
                     <div class="donors-grid">
+                        <!-- EDITABLE: Donor Names -->
                         <div class="donor-chip">Marci is Marci</div>
                         <div class="donor-chip">Volti</div>
                         <div class="donor-chip">Calamitos</div>
@@ -1317,6 +1548,7 @@
                     </div>
                 </div>
 
+                <!-- DONATION SECTION -->
                 <div class="donation-section">
                     <div class="container">
                         <h3 class="lang-en">Support Our Innovation</h3>
@@ -1395,6 +1627,7 @@
             </div>
         </section>
 
+        <!-- CALL TO ACTION SECTION -->
         <section class="section cta">
             <div class="container">
                 <h2 class="section-title lang-en">Ready to collaborate?</h2>
@@ -1410,6 +1643,7 @@
         </section>
     </main>
 
+    <!-- FOOTER SECTION -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
@@ -1434,13 +1668,64 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const bodyEl = document.body;
         const htmlEl = document.documentElement;
+        
+        // --- Mobile Menu Logic ---
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const navWrapper = document.querySelector('.nav-and-controls-wrapper');
+        const menuOverlay = document.querySelector('.menu-overlay');
+        const navLinks = navWrapper.querySelectorAll('a');
+
+        function toggleMenu(forceClose = false) {
+            const isOpen = bodyEl.classList.contains('menu-open');
+            if (forceClose || isOpen) {
+                bodyEl.classList.add('menu-closing');
+                setTimeout(() => {
+                    bodyEl.classList.remove('menu-open');
+                    bodyEl.classList.remove('menu-closing');
+                }, 500); // Match animation duration
+                menuToggle.setAttribute('aria-expanded', 'false');
+            } else {
+                bodyEl.classList.add('menu-open');
+                menuToggle.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        menuOverlay.addEventListener('click', () => toggleMenu(true));
+        navLinks.forEach(link => {
+            if (link.getAttribute('href').startsWith('#')) {
+                link.addEventListener('click', () => toggleMenu(true));
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        navWrapper.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        navWrapper.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) { // Swiped left
+                toggleMenu(true);
+            }
+        }, { passive: true });
+
+
+        // --- Language and Theme Logic ---
         const languageDropdown = document.getElementById('language-dropdown');
         const currentLangBtn = document.getElementById('current-lang-btn');
         const dropdownContent = document.getElementById('dropdown-content');
         const langOptions = document.querySelectorAll('.lang-option');
+        const themeToggle = document.getElementById('theme-toggle');
 
-        // Language data
         const languages = {
             en: { flag: '🇬🇧', text: 'EN' },
             ru: { flag: '🏴‍☠️', text: 'RU' },
@@ -1449,107 +1734,110 @@
 
         function setLanguage(lang) {
             if (!languages[lang]) return;
-
-            // Update HTML lang attribute
             htmlEl.setAttribute('lang', lang);
-            
-            // Update the main button
             currentLangBtn.innerHTML = `<span class="flag-icon">${languages[lang].flag}</span> ${languages[lang].text}`;
-
-            // Update active class in dropdown
-            langOptions.forEach(opt => {
-                opt.classList.toggle('active', opt.dataset.lang === lang);
-            });
-
-            // Save to localStorage
+            langOptions.forEach(opt => opt.classList.toggle('active', opt.dataset.lang === lang));
             localStorage.setItem('engineerglab_lang', lang);
-            
-            // Close dropdown
             languageDropdown.classList.remove('show');
         }
 
-        // Toggle dropdown visibility
         currentLangBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             languageDropdown.classList.toggle('show');
         });
 
-        // Set language on option click
         langOptions.forEach(option => {
             option.addEventListener('click', (e) => {
                 e.preventDefault();
-                const newLang = e.currentTarget.dataset.lang;
-                setLanguage(newLang);
+                setLanguage(e.currentTarget.dataset.lang);
             });
         });
 
-        // Close dropdown if clicked outside
         window.addEventListener('click', (e) => {
             if (!languageDropdown.contains(e.target)) {
                 languageDropdown.classList.remove('show');
             }
         });
 
-        // --- Initial Language Setup ---
         const savedLang = localStorage.getItem('engineerglab_lang') || (navigator.language.startsWith('uk') ? 'ua' : (navigator.language.startsWith('ru') ? 'ru' : 'en'));
         setLanguage(savedLang in languages ? savedLang : 'en');
 
-
-        // --- Theme Toggle Logic (unchanged) ---
-        const themeToggle = document.getElementById('theme-toggle');
-        const bodyEl = document.body;
-
         function applyTheme(theme) {
-            if (theme === 'dark') {
-                bodyEl.classList.add('dark-mode');
-            } else {
-                bodyEl.classList.remove('dark-mode');
-            }
+            bodyEl.classList.toggle('dark-mode', theme === 'dark');
             localStorage.setItem('engineerglab_theme', theme);
         }
 
         themeToggle.addEventListener('click', () => {
-            const newTheme = bodyEl.classList.contains('dark-mode') ? 'light' : 'dark';
-            applyTheme(newTheme);
+            applyTheme(bodyEl.classList.contains('dark-mode') ? 'light' : 'dark');
         });
 
-        const savedTheme = localStorage.getItem('engineerglab_theme') || 'light';
-        applyTheme(savedTheme);
-
-        // --- Copyright Year (updated for UA) ---
+        applyTheme(localStorage.getItem('engineerglab_theme') || 'light');
+        
+        // --- Copyright Year ---
         const currentYear = new Date().getFullYear();
         document.querySelectorAll('.copyright.lang-en').forEach(el => el.textContent = `© ${currentYear} EngineerG Lab. All rights reserved.`);
         document.querySelectorAll('.copyright.lang-ru').forEach(el => el.textContent = `© ${currentYear} EngineerG Lab. Все права защищены.`);
         document.querySelectorAll('.copyright.lang-ua').forEach(el => el.textContent = `© ${currentYear} EngineerG Lab. Всі права захищені.`);
 
 
-        // --- Scroll and Animation Logic (unchanged) ---
+        // --- Scroll, Animation, and Active Nav Logic ---
         const scrollToTopBtn = document.getElementById('scroll-to-top');
         const scrollProgress = document.getElementById('scroll-progress');
         const header = document.querySelector('header');
+        let lastScrollTop = 0;
 
         window.addEventListener('scroll', () => {
-            const scrollTop = document.documentElement.scrollTop;
-            scrollToTopBtn.classList.toggle('show', scrollTop > 300);
-            header.classList.toggle('scrolled', scrollTop > 50);
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
             const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (scrollTop / scrollHeight) * 100;
             scrollProgress.style.width = scrolled + '%';
-        });
+
+            if (scrollTop > lastScrollTop) {
+                scrollProgress.style.visibility = 'visible';
+            } else { 
+                scrollProgress.style.visibility = 'visible';
+            }
+            if (scrollTop === 0) {
+                 scrollProgress.style.visibility = 'hidden';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+            scrollToTopBtn.classList.toggle('show', scrollTop > 300);
+            header.classList.toggle('scrolled', scrollTop > 50);
+        }, { passive: true });
 
         scrollToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-        const sections = document.querySelectorAll('.section');
-        const observer = new IntersectionObserver((entries) => {
+        const sections = document.querySelectorAll('main > section[id]');
+        const allNavLinks = document.querySelectorAll('nav a');
+
+        const observerOptions = {
+            rootMargin: '-50% 0px -50% 0px',
+            threshold: 0
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
+                const id = entry.target.getAttribute('id');
+                
+                if (entry.isIntersecting && !entry.target.classList.contains('fade-in')) {
+                     entry.target.classList.add('fade-in');
+                }
+                
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                    observer.unobserve(entry.target);
+                    allNavLinks.forEach(link => link.classList.remove('active'));
+                    document.querySelectorAll(`nav a[href="#${id}"]`).forEach(l => l.classList.add('active'));
                 }
             });
-        }, { threshold: 0.1 });
-        sections.forEach(section => observer.observe(section));
+        }, observerOptions);
+        
+        sections.forEach(section => {
+             sectionObserver.observe(section);
+        });
 
+
+        // --- Interactive Elements Logic ---
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         const interactiveElements = document.querySelectorAll('a, button, .interactive-card, .copy-btn');
@@ -1584,7 +1872,7 @@
             });
         });
 
-        // --- Copy Button Logic (updated for UA) ---
+        // --- Copy Button Logic ---
         document.querySelectorAll('.copy-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const targetId = this.dataset.clipboardTarget;
@@ -1615,3 +1903,4 @@
     </script>
 </body>
 </html>
+
