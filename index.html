@@ -11,19 +11,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="logo.png" type="image/png">
     <style>
-        /* Variables for light and dark theme */
+        /* --- ОСНОВНЫЕ ПЕРЕМЕННЫЕ (СВЕТЛАЯ И ТЕМНАЯ ТЕМЫ) --- */
         :root {
             --orange-primary: #FF8C00;
             --orange-secondary: #FFA500;
             --orange-light: #FFDAB9;
             --orange-dark: #CC7000;
             
-            /* Light theme (default) */
+            /* Светлая тема (по умолчанию) */
             --bg-primary: #FFF8F0;
             --bg-secondary: #ffffff;
             --text-primary: #333333;
             --text-secondary: #6B7280;
-            --header-bg: rgba(255, 255, 255, 0.85);
+            --header-bg: rgba(255, 255, 255, 0.8);
             --card-shadow: rgba(0, 0, 0, 0.1);
             --hero-overlay: rgba(0, 0, 0, 0.75);
             --footer-bg: var(--orange-dark);
@@ -31,13 +31,13 @@
             --border-color: rgba(0, 0, 0, 0.1);
         }
 
-        /* Dark theme */
+        /* Темная тема */
         body.dark-mode {
             --bg-primary: #121212;
             --bg-secondary: #1E1E1E;
             --text-primary: #E0E0E0;
             --text-secondary: #A0A0A0;
-            --header-bg: rgba(18, 18, 18, 0.85);
+            --header-bg: rgba(18, 18, 18, 0.75);
             --card-shadow: rgba(0, 0, 0, 0.4);
             --hero-overlay: rgba(0, 0, 0, 0.8);
             --footer-bg: #1E1E1E;
@@ -135,8 +135,9 @@
 
         header {
             background-color: var(--header-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
             box-shadow: 0 1px 3px var(--card-shadow);
             position: sticky;
             top: 0;
@@ -345,45 +346,34 @@
              background-color: var(--orange-dark);
              transform: scale(1.1);
         }
-        .mobile-menu-toggle .icon-container {
+        /* Стили для иконок внутри кнопки */
+        .mobile-menu-toggle .wrench-icon,
+        .mobile-menu-toggle .cross-icon {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
             width: 24px;
             height: 24px;
-        }
-        .mobile-menu-toggle .power-icon,
-        .mobile-menu-toggle .cross-icon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            transform: translate(-50%, -50%);
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
+            stroke: white;
         }
-        .mobile-menu-toggle .power-icon {
+        .mobile-menu-toggle .wrench-icon {
             opacity: 1;
-            transform: scale(1) rotate(0);
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
         }
         .mobile-menu-toggle .cross-icon {
             opacity: 0;
-            transform: scale(0.5) rotate(-90deg);
+            transform: translate(-50%, -50%) rotate(-90deg) scale(0.5);
         }
-        body.menu-open .mobile-menu-toggle .power-icon {
+        body.menu-open .mobile-menu-toggle .wrench-icon {
             opacity: 0;
-            transform: scale(0.5) rotate(90deg);
+            transform: translate(-50%, -50%) rotate(90deg) scale(0.5);
         }
         body.menu-open .mobile-menu-toggle .cross-icon {
             opacity: 1;
-            transform: scale(1) rotate(0);
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
         }
-        body.menu-closing .mobile-menu-toggle .cross-icon {
-            transform: translateY(-30px) rotate(90deg);
-            opacity: 0;
-            transition: transform 0.4s ease-in, opacity 0.3s ease-in;
-        }
-
 
         .hero {
             padding: 6rem 0;
@@ -398,6 +388,7 @@
             background-repeat: no-repeat;
             background-position: center center;
             animation: hero-parallax 60s linear infinite alternate;
+            transition: background-image 0.5s ease-in-out;
         }
         
         .hero::before {
@@ -497,7 +488,7 @@
             border-top: 1px solid var(--border-color);
             box-shadow: 0 -2px 5px rgba(128, 128, 128, 0.05);
         }
-
+        
         @keyframes radial-pulse {
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
@@ -609,7 +600,7 @@
                         background-color 0.4s;
         }
         .interactive-card:hover {
-            box-shadow: 0 12px 20px -3px var(--card-shadow), 0 0 15px rgba(255, 140, 0, 0.6);
+            box-shadow: 0 12px 20px -3px var(--card-shadow), 0 0 15px var(--orange-light);
             border: 1px solid var(--orange-secondary);
         }
 
@@ -690,7 +681,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
         .donor-chip {
             background-color: var(--bg-primary);
@@ -700,13 +691,89 @@
             font-weight: 500;
             box-shadow: 0 2px 4px var(--card-shadow);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         .donor-chip:hover {
             transform: translateY(-3px);
             background-image: linear-gradient(45deg, var(--orange-primary), var(--orange-secondary));
             color: white;
-            box-shadow: 0 4px 8px rgba(255, 140, 0, 0.4);
+            box-shadow: 0 4px 8px var(--orange-light);
         }
+
+        /* --- НОВЫЕ СТИЛИ ДЛЯ ВЫДЕЛЕНИЯ ДОНАТЕРОВ --- */
+        .donor-chip.special, .donor-chip.gold, .donor-chip.silver, .donor-chip.bronze, .donor-chip.rainbow {
+            font-weight: 700;
+            color: white;
+            border: 1px solid transparent;
+            padding-left: 2.5rem;
+        }
+
+        .donor-chip.special::before, .donor-chip.gold::before, .donor-chip.silver::before, .donor-chip.bronze::before, .donor-chip.rainbow::before {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+        }
+        
+        .donor-chip.special {
+            background: linear-gradient(45deg, var(--orange-dark), var(--orange-primary));
+            box-shadow: 0 4px 10px rgba(255, 140, 0, 0.5);
+        }
+        .donor-chip.special::before { content: '⭐'; }
+
+        .donor-chip.gold {
+            background: linear-gradient(45deg, #FFDF00, #FFB300, #FFDF00);
+            background-size: 200% 200%;
+            color: #4a3300;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6), inset 0 0 5px rgba(255,255,255,0.5);
+            border: 1px solid #FFD700;
+            animation: gold-shine 3s ease-in-out infinite;
+        }
+        .donor-chip.gold::before { content: '🏆'; }
+        
+        .donor-chip.silver {
+            background: linear-gradient(45deg, #e0e0e0, #b0b0b0, #e0e0e0);
+            background-size: 200% 200%;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(192, 192, 192, 0.6), inset 0 0 5px rgba(255,255,255,0.5);
+            border: 1px solid #c0c0c0;
+            animation: gold-shine 4s ease-in-out infinite;
+        }
+        .donor-chip.silver::before { content: '🥈'; }
+
+        .donor-chip.bronze {
+            background: linear-gradient(45deg, #cd7f32, #a0522d, #cd7f32);
+            background-size: 200% 200%;
+            color: white;
+            text-shadow: 1px 1px 2px #5c2f0f;
+            box-shadow: 0 4px 15px rgba(205, 127, 50, 0.6), inset 0 0 5px rgba(255,255,255,0.3);
+            border: 1px solid #b87333;
+            animation: gold-shine 5s ease-in-out infinite;
+        }
+        .donor-chip.bronze::before { content: '🥉'; }
+
+        .donor-chip.rainbow {
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+            background-size: 400% 400%;
+            animation: rainbow-flow 5s linear infinite;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .donor-chip.rainbow::before { content: '✨'; }
+
+        @keyframes gold-shine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes rainbow-flow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
 
         .project-card-link {
             text-decoration: none;
@@ -913,15 +980,114 @@
             height: 24px;
         }
 
+        /* --- НОВЫЕ СТИЛИ ДЛЯ РАЗДЕЛА КОНТАКТОВ --- */
+        .contact-section-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 3rem;
+            align-items: center;
+            background-color: var(--bg-secondary);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px var(--card-shadow);
+            transition: background-color 0.4s, box-shadow 0.4s;
+        }
 
-        .cta { text-align: center; }
-        .cta h2 { margin-bottom: 1.5rem; }
-        .cta p { max-width: 600px; margin: 0 auto 2.5rem; color: var(--text-primary); }
+        .contact-info h3 {
+            font-size: 2rem;
+            color: var(--orange-dark);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
         
+        .contact-details {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-details li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .contact-details .icon {
+            color: var(--orange-primary);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .contact-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .contact-form .input,
+        .contact-form .textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s, background-color 0.4s;
+        }
+
+        .contact-form .input:focus,
+        .contact-form .textarea:focus {
+            outline: none;
+            border-color: var(--orange-primary);
+            box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.3);
+        }
+
+        .contact-form .textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        #form-message {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            display: none;
+        }
+        #form-message.success {
+            background-color: rgba(4, 120, 87, 0.1);
+            color: #065F46;
+        }
+        body.dark-mode #form-message.success {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #A7F3D0;
+        }
+
         footer {
             background-color: var(--footer-bg);
             color: var(--footer-text);
             padding: 3rem 0;
+            margin-top: 5rem; /* Add space above footer */
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
             box-shadow: 0 -4px 8px var(--card-shadow);
@@ -997,13 +1163,13 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                order: 1; /* Make it the last item in the flex order */
+                order: 1;
             }
             .header-container {
                 justify-content: space-between;
             }
             .logo-img {
-                order: -1; /* Make it the first item */
+                order: -1;
             }
 
             .nav-and-controls-wrapper {
@@ -1030,9 +1196,9 @@
             body.menu-open .nav-and-controls-wrapper {
                 transform: translateX(0);
             }
-
-            .nav-and-controls-wrapper nav {
-                flex-grow: 0; /* Don't let it grow, just take space it needs */
+            
+            nav {
+                width: 100%;
             }
             
             nav ul {
@@ -1081,21 +1247,20 @@
             nav a.active {
                 font-weight: 700;
                 color: var(--orange-dark);
-                border-bottom: 2px solid var(--orange-secondary);
+                border-left: 3px solid var(--orange-primary); /* ИСПРАВЛЕНО */
+                border-bottom: none;
             }
             nav a.active::before {
-                content: '●';
-                color: var(--orange-primary);
-                font-size: 0.8em;
-                line-height: 1;
+                content: ''; /* Убрали точку */
             }
             body.dark-mode nav a.active {
                 color: var(--orange-light);
             }
             
             .header-controls {
-                flex-direction: row; /* FIX: Keep controls in a row */
-                justify-content: space-around; /* Space them out */
+                margin-top: auto; /* ИСПРАВЛЕНО */
+                flex-direction: row;
+                justify-content: space-around;
                 align-items: center;
                 width: 100%;
                 gap: 1.5rem;
@@ -1103,7 +1268,7 @@
                 border-top: 1px solid var(--border-color);
             }
             .language-dropdown .dropdown-content {
-                bottom: 100%; /* Open dropdown upwards */
+                bottom: 100%;
                 top: auto;
                 margin-bottom: 5px;
                 transform: translateY(10px);
@@ -1138,6 +1303,17 @@
             .section-title { font-size: 2rem; }
             .employee-grid { grid-template-columns: 1fr; }
             .wallet-grid { grid-template-columns: 1fr; }
+            .contact-section-wrapper {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+                gap: 2rem;
+            }
+            .contact-info {
+                text-align: center;
+            }
+            .contact-details {
+                justify-content: center;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1213,16 +1389,13 @@
                 </div>
             </div>
             <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
-                <div class="icon-container">
-                    <svg class="power-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="7" x2="12" y2="14" />
-                        <path d="M8,10 A6,6 0 1 1 16,10" />
-                    </svg>
-                    <svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                    </svg>
-                </div>
+                <svg class="wrench-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                </svg>
+                <svg class="cross-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                </svg>
             </button>
         </div>
     </header>
@@ -1540,11 +1713,11 @@
                     <p class="subsection-description lang-ru">Мы безмерно благодарны всем, кто поддерживает наше сообщество. Ваш вклад помогает нам двигаться вперед и реализовывать новые идеи. Спасибо!</p>
                     <p class="subsection-description lang-ua">Ми безмежно вдячні всім, хто підтримує нашу спільноту. Ваш внесок допомагає нам рухатися вперед і реалізовувати нові ідеї. Дякуємо!</p>
                     <div class="donors-grid">
-                        <!-- EDITABLE: Donor Names -->
-                        <div class="donor-chip">Marci is Marci</div>
-                        <div class="donor-chip">Volti</div>
-                        <div class="donor-chip">Calamitos</div>
-                        <div class="donor-chip">Polina ENFP</div>
+                        <!-- ИЗМЕНЕНО: Добавлены классы для стилизации -->
+                        <div class="donor-chip gold">Marci is Marci</div>
+                        <div class="donor-chip silver">Volti</div>
+                        <div class="donor-chip bronze">Calamitos</div>
+                        <div class="donor-chip rainbow">Polina ENFP</div>
                     </div>
                 </div>
 
@@ -1627,24 +1800,67 @@
             </div>
         </section>
 
-        <!-- CALL TO ACTION SECTION -->
-        <section class="section cta">
+        <!-- НОВЫЙ РАЗДЕЛ КОНТАКТОВ -->
+        <section id="contact" class="section">
             <div class="container">
-                <h2 class="section-title lang-en">Ready to collaborate?</h2>
-                <h2 class="section-title lang-ru">Готовы к сотрудничеству?</h2>
-                <h2 class="section-title lang-ua">Готові до співпраці?</h2>
-                <p class="lang-en">Whether you're looking for research partnerships, consulting, or custom engineering solutions, we'd love to hear from you.</p>
-                <p class="lang-ru">Ищете ли вы партнерства в исследованиях, консалтинг или индивидуальные инженерные решения, мы будем рады услышать от вас.</p>
-                <p class="lang-ua">Чи шукаєте ви партнерства в дослідженнях, консалтинг або індивідуальні інженерні рішення, ми будемо раді почути вас.</p>
-                <a href="mailto:engineerglab@gmail.com?subject=Collaboration%20Inquiry%20from%20Website&body=Dear%20EngineerG%20Lab%20Team%2C%0A%0AI%20am%20interested%20in%20discussing%20a%20potential%20collaboration%20regarding%3A%0A%0A[Your%20message%20here]%0A%0ABest%20regards%2C%0A[Your%20Name]" class="btn lang-en">Get in Touch</a>
-                <a href="mailto:engineerglab@gmail.com?subject=Запрос%20о%20сотрудничестве%20с%20сайта&body=Уважаемая%20команда%20EngineerG%20Lab%2C%0A%0AЯ%20заинтересован%20в%20обсуждении%20потенциального%20сотрудничества%20по%20поводу%3A%0A%0A[Ваше%20сообщение%20здесь]%0A%20уважением%2C%0A[Ваше%20имя]" class="btn lang-ru">Связаться с нами</a>
-                <a href="mailto:engineerglab@gmail.com?subject=Запит%20про%20співпрацю%20з%20сайту&body=Шановна%20команда%20EngineerG%20Lab%2C%0A%0AЯ%20зацікавлений%20в%20обговоренні%20потенційної%20співпраці%20щодо%3A%0A%0A[Ваше%20повідомлення%20тут]%0A%0AЗ%20повагою%2C%0A[Ваше%20Ім'я]" class="btn lang-ua">Зв'язатися з нами</a>
+                <h2 class="section-title lang-en">Get In Touch</h2>
+                <h2 class="section-title lang-ru">Свяжитесь с Нами</h2>
+                <h2 class="section-title lang-ua">Зв'яжіться з Нами</h2>
+                <div class="contact-section-wrapper">
+                    <div class="contact-info">
+                        <h3 class="lang-en">Let's build the future together.</h3>
+                        <h3 class="lang-ru">Давайте строить будущее вместе.</h3>
+                        <h3 class="lang-ua">Будуймо майбутнє разом.</h3>
+
+                        <p class="lang-en">Have a project in mind, a question, or just want to say hello? Fill out the form and we'll get back to you as soon as possible.</p>
+                        <p class="lang-ru">У вас есть проект, вопрос или вы просто хотите поздороваться? Заполните форму, и мы свяжемся с вами как можно скорее.</p>
+                        <p class="lang-ua">Маєте на думці проєкт, запитання чи просто хочете привітатися? Заповніть форму, і ми зв'яжемося з вами якомога швидше.</p>
+                        
+                        <ul class="contact-details">
+                            <li>
+                                <span class="icon">📧</span>
+                                <a href="mailto:engineerglab@gmail.com" style="color: var(--text-primary); text-decoration: none;">engineerglab@gmail.com</a>
+                            </li>
+                            <li>
+                                <span class="icon">💬</span>
+                                <a href="https://t.me/LogovoOfEngineer" target="_blank" style="color: var(--text-primary); text-decoration: none;">Telegram Community</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <form id="contact-form" class="contact-form" novalidate>
+                        <div class="form-group">
+                            <label for="name" class="lang-en">Your Name</label>
+                            <label for="name" class="lang-ru">Ваше Имя</label>
+                            <label for="name" class="lang-ua">Ваше Ім'я</label>
+                            <input type="text" id="name" name="name" class="input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="lang-en">Subject</label>
+                            <label for="subject" class="lang-ru">Тема</label>
+                            <label for="subject" class="lang-ua">Тема</label>
+                            <input type="text" id="subject" name="subject" class="input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="lang-en">Message</label>
+                            <label for="message" class="lang-ru">Сообщение</label>
+                            <label for="message" class="lang-ua">Повідомлення</label>
+                            <textarea id="message" name="message" class="textarea" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">
+                            <span class="lang-en">Send Message</span>
+                            <span class="lang-ru">Отправить</span>
+                            <span class="lang-ua">Надіслати</span>
+                        </button>
+                        <div id="form-message"></div>
+                    </form>
+                </div>
             </div>
         </section>
+
     </main>
 
     <!-- FOOTER SECTION -->
-    <footer id="contact">
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <h3>EngineerG Lab</h3>
@@ -1680,11 +1896,7 @@
         function toggleMenu(forceClose = false) {
             const isOpen = bodyEl.classList.contains('menu-open');
             if (forceClose || isOpen) {
-                bodyEl.classList.add('menu-closing');
-                setTimeout(() => {
-                    bodyEl.classList.remove('menu-open');
-                    bodyEl.classList.remove('menu-closing');
-                }, 500); // Match animation duration
+                bodyEl.classList.remove('menu-open');
                 menuToggle.setAttribute('aria-expanded', 'false');
             } else {
                 bodyEl.classList.add('menu-open');
@@ -1898,6 +2110,47 @@
                 }
                 document.body.removeChild(textarea);
             });
+        });
+
+        // --- НОВЫЙ СКРИПТ ДЛЯ КОНТАКТНОЙ ФОРМЫ ---
+        const contactForm = document.getElementById('contact-form');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            if (!name || !subject || !message) {
+                // Простое уведомление, можно улучшить
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            const mailtoLink = `mailto:engineerglab@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\n\nMessage:\n${message}`)}`;
+            
+            window.location.href = mailtoLink;
+
+            // Показать сообщение об успехе
+            formMessage.className = 'success';
+            const currentLang = document.documentElement.lang;
+            if (currentLang === 'ru') {
+                formMessage.textContent = 'Спасибо! Ваш почтовый клиент должен открыться для отправки письма.';
+            } else if (currentLang === 'ua') {
+                formMessage.textContent = 'Дякуємо! Ваш поштовий клієнт має відкритися для надсилання листа.';
+            } else {
+                formMessage.textContent = 'Thank you! Your email client should open to send the message.';
+            }
+            formMessage.style.display = 'block';
+
+            // Очистить форму
+            contactForm.reset();
+            
+            setTimeout(() => {
+                formMessage.style.display = 'none';
+            }, 5000);
         });
     });
     </script>
